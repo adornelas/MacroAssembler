@@ -15,7 +15,8 @@ void ConvertFileToMatrix(fileData * input_file, tokenMatrix * input_matrix){
     input_matrix->lines = lines;
 }
 
-// #TODO: Remover comentários e habilitar rótulo seguido de dois pontos e enter
+// #TODO: Habilitar rótulo seguido de dois pontos e enter
+// #TODO: Colocar a SECTION DATA sempre ao final do código pré processado
 void ConvertFileToMatrixCaps(fileData * input_file, tokenMatrix * input_matrix){
     int lines = 0;
     std::string temp;
