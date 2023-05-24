@@ -1,5 +1,11 @@
 #include "../include/preprocessor.hpp"
 
+
+// #TODO: Habilitar rótulo seguido de dois pontos e enter
+// #TODO: Colocar a SECTION DATA sempre ao final do código pré processado
+// #TODO: Lidar com diretiva CONST (verificar se está no formato correto e passar para decimal)
+// #TODO: Desconsiderar enters desnecessários entre as linhas
+// #TODO: CASO NECESSÁRIO, separar rótulo de operação com espaço caso não haja
 void PreProcessing(fileData *input_file, fileData *outuput_file)
 {
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
