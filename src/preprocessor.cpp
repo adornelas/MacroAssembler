@@ -14,6 +14,9 @@ void PreProcessing(fileData *input_file, fileData *outuput_file)
     ConvertFileToMatrixCaps(input_file, input_matrix);
     CleanMatrix(input_matrix);
     ConvertMatrixToFile(input_matrix, outuput_file);
+
+    delete input_matrix;
+    delete output_matrix;
 }
 
 void CleanMatrix(tokenMatrix * input_matrix){

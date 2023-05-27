@@ -31,4 +31,8 @@ int main(int argc, char **argv)
     ofstream ofs(output_file->name);
     ofs << output_file->content;
     ofs.close();
+
+    // limpa objetos criados na memoria (palavra: new)
+    delete input_file;
+    delete output_file;
 }
