@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
     // #TODO: Verificar se nos arquivos testes existe algum caso com arquivo vazio
     if(input_file->content.length() <= 1){
-        printf("Arquivo inválido!\n");
+        printf("Arquivo %s inválido!\n", input_file->name.c_str());
         return 1;
     }
 
