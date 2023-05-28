@@ -16,7 +16,7 @@ clean:
 	${RM} $(OBJ) $(BIN) obj
 
 $(BIN): $(OBJ)
-	$(CPP) $(OBJ) -o montador
+	$(CPP) $(OBJ) -o montador -g
 
 obj/%.o: %.cpp
-	$(CPP) -c $< -o $@
+	$(CPP) -c $< -o $@ -g
