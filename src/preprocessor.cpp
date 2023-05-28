@@ -1,6 +1,5 @@
 #include "../include/preprocessor.hpp"
 
-
 // #TODO: Habilitar rótulo seguido de dois pontos e enter
 // #TODO: Colocar a SECTION DATA sempre ao final do código pré processado
 // #TODO: Lidar com diretiva CONST (verificar se está no formato correto e passar para decimal)
@@ -26,6 +25,9 @@ void CleanMatrix(tokenMatrix * input_matrix){
 
     for (int i = 0; i < input_matrix->lines; i++){
         matrix_line = input_matrix->matrix[i];
+        if(matrix_line.size() == 0){
+            continue;
+        }
         clean_line = {};
         for (long unsigned int j = 0; j < matrix_line.size(); j++){
             if (matrix_line[j][0] == ';')
