@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     if (argc != 2)
     {
         cout << "Quantidade de argumentos invalida (" << argc << "),\ninsira no programa -diretiva nomedoprograma.asm nomedasaida.obj" << endl;
-        return 0;
+        return 1;
     }
 
     fileData *input_file = new fileData{.name = argv[1]};
@@ -26,13 +26,19 @@ int main(int argc, char **argv)
     buffer << ifs.rdbuf();
     input_file->content = buffer.str();
 
+    // #TODO: Verificar se nos arquivos testes existe algum caso com arquivo vazio
+    if(input_file->content.length() <= 1){
+        printf("Arquivo inválido!\n");
+        return 1;
+    }
+
     PreProcessing(input_file, output_file);
 
     ofstream ofs(output_file->name);
     ofs << output_file->content;
     ofs.close();
 
-    // limpa objetos criados na memoria (palavra: new)
+    // comentario explicativo: limpa objetos criados na memoria (palavra: new)
     delete input_file;
     delete output_file;
 }
