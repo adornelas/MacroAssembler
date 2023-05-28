@@ -1,9 +1,7 @@
 #include "../include/preprocessor.hpp"
 
-// #TODO: Habilitar rótulo seguido de dois pontos e enter
 // #TODO: Colocar a SECTION DATA sempre ao final do código pré processado
 // #TODO: Lidar com diretiva CONST (verificar se está no formato correto e passar para decimal)
-// #TODO: CASO NECESSÁRIO, separar rótulo de operação com espaço caso não haja
 void PreProcessing(fileData *input_file, fileData *outuput_file)
 {
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
@@ -17,20 +15,41 @@ void PreProcessing(fileData *input_file, fileData *outuput_file)
     delete output_matrix;
 }
 
+bool isLabel(std::string str){
+    for( int i = 0 ; i < str.size() ; i++){
+        if(str[i] == ':'){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void CleanMatrix(tokenMatrix * input_matrix){
     std::vector<std::vector<std::string>> matrix;
     std::vector<std::string> matrix_line;
     std::vector<std::string> clean_line;
 
-    for (int i = 0; i < input_matrix->lines; i++){
+    for(int i = 0; i < input_matrix->lines; i++){
         matrix_line = input_matrix->matrix[i];
         if(matrix_line.size() == 0){
-            continue;
+            input_matrix->matrix.erase(input_matrix->matrix.begin() + i);
+            input_matrix->lines--;
+            i--;
+        }
+    }
+
+    for (int i = 0; i < input_matrix->lines; i++){
+        matrix_line = input_matrix->matrix[i];
+        if(matrix_line.size() == 1 && isLabel(matrix_line[0])){
+            matrix_line.insert(matrix_line.end(), input_matrix->matrix[i+1].begin(), input_matrix->matrix[i+1].end());
+            input_matrix->matrix.erase(input_matrix->matrix.begin() + i + 1);
         }
         clean_line = {};
         for (long unsigned int j = 0; j < matrix_line.size(); j++){
             if (matrix_line[j][0] == ';')
                 break;
+            
             clean_line.push_back(matrix_line[j]);
         }
         matrix.push_back(clean_line);
