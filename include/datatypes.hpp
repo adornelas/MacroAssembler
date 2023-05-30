@@ -12,6 +12,12 @@ struct fileData {
     std::string content;
 };
 
+struct compilationError {
+    std::string type;
+    std::string message;
+    int line;
+};
+
 struct tokenMatrix {
     int lines;
     std::vector<std::vector<std::string>> matrix;
