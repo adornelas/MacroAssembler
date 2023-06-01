@@ -15,4 +15,7 @@ void Assembler(fileData *input_file, fileData *output_file){
 
 void TranslateAssemblyToObject(tokenMatrix *input_matrix){
 
+    for(int i = 0; i < input_matrix->matrix.size(); i++){
+        
+    }
 }
