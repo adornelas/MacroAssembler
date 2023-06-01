@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
     fileData *input_file = new fileData{.name = argv[1]};
     input_file->name.append(".asm");
-    fileData *output_file_pre_processing = new fileData{.name = "preprocessedfile"};
+    fileData *output_file_pre_processing = new fileData{.name = "preprocessedFile"};
     fileData *output_file_assembler = new fileData{.name = "assembledFile"};
 
     ifstream ifs(input_file->name);
