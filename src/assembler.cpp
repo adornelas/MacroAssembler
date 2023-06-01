@@ -14,8 +14,13 @@ void Assembler(fileData *input_file, fileData *output_file){
 }
 
 void TranslateAssemblyToObject(tokenMatrix *input_matrix){
+    std::vector<std::string> matrix_line;
 
     for(int i = 0; i < input_matrix->matrix.size(); i++){
-        
+        matrix_line = input_matrix->matrix[i];
+
+        if(isLabel(matrix_line[0])){
+            
+        }
     }
 }

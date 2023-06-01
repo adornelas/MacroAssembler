@@ -1,4 +1,4 @@
-#include "../include/assemblerMaps.hpp"
+#include "../include/assemblerData.hpp"
 
 std::map<std::string, char> op_type_map = {
     // 't' para operação da seção texto
@@ -24,4 +24,6 @@ std::map<std::string, std::string> op_code_map = {
     {"ADD", "1"}, {"SUB", "2"}, {"MUL", "3"}, {"DIV", "4"}, {"JMP", "5"}, {"JMPN", "6"}, {"JMPP", "7"},{"JMPZ", "8"},
     {"COPY", "9"}, {"LOAD", "10"}, {"STORE", "11"}, {"INPUT", "12"}, {"OUTPUT", "13"}, {"STOP", "14"},
 };
+
+
 

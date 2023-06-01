@@ -1,7 +1,7 @@
 #ifndef ASSEMBLER_H
 #define ASSEMBLER_H
 
-#include "assemblerMaps.hpp"
+#include "assemblerData.hpp"
 #include "datatypes.hpp"
 #include "utils.hpp"
 
