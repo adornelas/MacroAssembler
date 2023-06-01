@@ -14,16 +14,6 @@ void PreProcessing(fileData *input_file, fileData *outuput_file)
     delete output_matrix;
 }
 
-bool isLabel(std::string str){
-    for( int i = 0 ; i < str.size() ; i++){
-        if(str[i] == ':'){
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void CleanMatrix(tokenMatrix * input_matrix){
     std::vector<std::string> matrix_line;
     std::vector<std::string> clean_line;
