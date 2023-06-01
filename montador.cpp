@@ -38,7 +38,6 @@ int main(int argc, char **argv)
     ofs << output_file->content;
     ofs.close();
 
-    // comentario explicativo: limpa objetos criados na memoria (palavra: new)
     delete input_file;
     delete output_file;
 }
