@@ -1,5 +1,6 @@
 #include "include/datatypes.hpp"
 #include "include/preprocessor.hpp"
+#include "include/assembler.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -19,7 +20,8 @@ int main(int argc, char **argv)
 
     fileData *input_file = new fileData{.name = argv[1]};
     input_file->name.append(".asm");
-    fileData *output_file = new fileData{.name = "preprocessedfile"};
+    fileData *output_file_pre_processing = new fileData{.name = "preprocessedfile"};
+    fileData *output_file_assembler = new fileData{.name = "assembledFile"};
 
     ifstream ifs(input_file->name);
     stringstream buffer;
@@ -32,12 +34,18 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    PreProcessing(input_file, output_file);
+    PreProcessing(input_file, output_file_pre_processing);
+    Assembler(output_file_pre_processing, output_file_assembler);
 
-    ofstream ofs(output_file->name);
-    ofs << output_file->content;
+    ofstream opfs(output_file_pre_processing->name);
+    opfs << output_file_pre_processing->content;
+    opfs.close();
+
+    ofstream ofs(output_file_assembler->name);
+    ofs << output_file_assembler->content;
     ofs.close();
 
     delete input_file;
-    delete output_file;
+    delete output_file_pre_processing;
+    delete output_file_assembler;
 }
