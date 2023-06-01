@@ -69,6 +69,8 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix){
             }
 
             symbol_table.insert(symbol_table.end(), {matrix_line[0], i, .is_defined = true});
+            if (isLabel(matrix_line[1]))
+                printf("Erro: dois rotulos na mesma linha");
         }
 
 
