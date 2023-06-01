@@ -22,4 +22,13 @@
     - *Se* operando é número válido: insere no código objeto
 
 
+Erros a serem identificados:
+   - Dois rotulos na mesma linha
+   - Rótulo não definido na seção de TEXT
+   - Dado não definido na seção DATA
+   - Seção TEXT faltante
+   - EXTERN e PUBLIC em arquivo que NAO tenha BEGIN e END
+   - Erros Iéxicos (caracteres especiais fora o “_” (underscore) ou “numero inicial nos
+    rótulos)
+
 -------
