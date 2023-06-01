@@ -401,3 +401,6 @@ FodyWeavers.xsd
 montador 
 preprocessedFile 
 assembledFile
+
+/.vscode/settings.json
+teste.asm
