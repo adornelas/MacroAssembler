@@ -27,5 +27,11 @@ struct equIdentifier {
     std::string name;
     int value;
 };
+struct symbolData {
+    std:: string name;
+    int value;
+    bool is_defined;
+    std::vector<int> list_of_dependencies;
+};
 
 #endif
