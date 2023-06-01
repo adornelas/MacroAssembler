@@ -16,13 +16,19 @@ Observação: os programas foram feitos para linux (Ubuntu), mas o montador foi 
 Para montar o programa, é preciso digitar:
 
 ```
-g++ montador.cpp src/*.cpp -o montador -std=c++11
+make clean
+```
+
+E depois
+
+```
+make
 ```
 
 ### Para tradução do código
 
 ```
-./montador meuprograma.asm saida.obj
+./montador meuprograma saida.obj
 ```
 
 O resultado do pré-processamento é apenas o arquivo com a retirada de espaços desnecessários e todo em maiúsculo.
