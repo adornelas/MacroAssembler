@@ -5,5 +5,6 @@
 #include "datatypes.hpp"
 
 void Assembler(fileData *input_file, fileData *output_file);
+void TranslateAssemblyToObject(tokenMatrix *input_matrix);
 
 #endif
