@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # Specific case for our work
 montador 
 preprocessedfile 
+assembledFile
