@@ -1,4 +1,5 @@
 #include "../include/utils.hpp"
+#include "../include/assemblerData.hpp"
 
 bool isLabel(std::string str){
     for( int i = 0 ; i < str.size() ; i++){
@@ -88,4 +89,58 @@ std::vector <std::string> CommonSplit(std::string text, char separator){
         result.push_back(str);
     }
     return result;
+}
+
+bool isSymbolOnSymbolTable(std::vector<symbolData> symbol_table, std::string symbol,  int symbol_address){
+    bool is_symbol_on_table = false; 
+
+    for(int j = 0; j < symbol_table.size(); j++){
+        if(symbol == symbol_table[j].name){
+            is_symbol_on_table = true;
+            symbol_address = j;
+            break;
+        }
+    }
+
+    return is_symbol_on_table;
+}
+
+bool isSymbolDefined(std::vector<symbolData> symbol_table, std::string symbol, int symbol_address){
+    bool is_symbol_defined = false; 
+
+    for(int j = 0; j < symbol_table.size(); j++){
+        if(symbol == symbol_table[j].name){
+            if(symbol_table[j].is_defined){
+                is_symbol_defined = true;
+                symbol_address = j;
+            }
+            break;
+        }
+    }
+
+    return is_symbol_defined;
+}
+
+bool isInstructionOrDirective(std::string token){
+    
+    if(op_size_map.find(token) == op_size_map.end()){
+        return true;
+    }
+
+    return false;
+}
+
+bool isNumber(std::string token){
+    char *p;
+    strtol(token.c_str(), &p, 10);
+    return *p == 0;
+
+}
+
+void insertOnListOfDependecies(std::vector<symbolData> symbol_table, int symbol_address, int token_address){
+   symbol_table[symbol_address].list_of_dependencies.insert(symbol_table[symbol_address].list_of_dependencies.end(), token_address );
+}
+
+void insertOnSymbolTable(std::vector<symbolData> symbol_table, symbolData symbol_data ){
+    symbol_table.insert(symbol_table.end(), symbol_data);
 }
