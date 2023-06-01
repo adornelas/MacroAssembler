@@ -1,14 +1,14 @@
 #include "../include/preprocessor.hpp"
 
 // #TODO: Lidar com diretiva CONST (verificar se está no formato correto e passar para decimal)
-void PreProcessing(fileData *input_file, fileData *outuput_file)
+void PreProcessing(fileData *input_file, fileData *output_file)
 {
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
     tokenMatrix *output_matrix = new tokenMatrix{.lines = 0};
 
     ConvertFileToMatrixCaps(input_file, input_matrix);
     CleanMatrix(input_matrix);
-    ConvertMatrixToFile(input_matrix, outuput_file);
+    ConvertMatrixToFile(input_matrix, output_file);
 
     delete input_matrix;
     delete output_matrix;
