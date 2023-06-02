@@ -1,6 +1,7 @@
 #include "../include/assembler.hpp"
 
-// #TODO SPACE pode aceitar argumento. Logo é possível fazer rótulos como X + 2 (com espaços)
+// #TODO: SPACE pode aceitar argumento. Logo é possível fazer rótulos como X + 2 (com espaços)
+// #TODO: O comando COPY deve separar os argumentos por “,” COM espaços antes e depois da “,”(ex: COPY A1 , A2)
 void Assembler(fileData *input_file, fileData *output_file){
     
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
