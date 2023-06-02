@@ -23,10 +23,6 @@ struct tokenMatrix {
     std::vector<std::vector<std::string>> matrix;
 };
 
-struct equIdentifier {
-    std::string name;
-    int value;
-};
 struct symbolData {
     std:: string name;
     int value;
