@@ -24,7 +24,6 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
     int current_line_address = 0;
     int current_line_size = 0;
 
-    // std::vector<std::string> object; 
     int opcode;
 
     std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
