@@ -27,6 +27,7 @@ struct symbolData {
     std:: string name;
     int value;
     bool is_defined;
+    bool is_extern;
     std::vector<int> list_of_dependencies;
 };
 
