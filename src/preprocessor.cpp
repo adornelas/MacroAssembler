@@ -19,7 +19,7 @@ void CleanMatrix(tokenMatrix * input_matrix){
     std::vector<std::string> clean_line;
     std::vector<std::vector<std::string>> section_data;
 
-    for(int i = 0; i < input_matrix->lines; i++){
+    for(int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
 
         clean_line = {};
@@ -40,7 +40,7 @@ void CleanMatrix(tokenMatrix * input_matrix){
         }
     }
 
-    for (int i = 0; i < input_matrix->lines; i++){
+    for (int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
 
         if(matrix_line.size() == 1 && isLabel(matrix_line[0])){
@@ -52,7 +52,7 @@ void CleanMatrix(tokenMatrix * input_matrix){
 
     bool isInSectionData = false;
 
-    for (int i = 0; i < input_matrix->lines; i++){
+    for (int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
 
         if(isInSectionData) {
@@ -73,10 +73,10 @@ void CleanMatrix(tokenMatrix * input_matrix){
             for(int j = 0; j < input_matrix->matrix[i].size(); j++){
                 if(input_matrix->matrix[i][j] == "SECTION" && input_matrix->matrix[i][j+1] == "DATA"){
                     section_data.push_back(input_matrix->matrix[i]);
-                    section_data.push_back(input_matrix->matrix[i + 1]);
                     input_matrix->matrix.erase(input_matrix->matrix.begin() + i);
                     i--;
                     isInSectionData = true;
+                    break;
                 }
             }
         }
