@@ -124,10 +124,10 @@ bool isSymbolDefined(std::vector<symbolData> symbol_table, std::string symbol, i
 bool isInstructionOrDirective(std::string token){
     
     if(op_size_map.find(token) == op_size_map.end()){
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 bool isNumber(std::string token){
