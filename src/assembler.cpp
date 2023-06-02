@@ -1,5 +1,6 @@
 #include "../include/assembler.hpp"
 
+// #TODO SPACE pode aceitar argumento. Logo é possível fazer rótulos como X + 2 (com espaços)
 void Assembler(fileData *input_file, fileData *output_file){
     
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
