@@ -41,6 +41,17 @@ void ConvertFileToMatrixCaps(fileData * input_file, tokenMatrix * input_matrix){
     input_matrix->lines = lines;
 }
 
+void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData * output_file){
+    std::string text;
+    std::string matrix_line;
+    for (int i = 0; i < output_object.size(); i++){
+        text.append(output_object[i]);
+        text.append(" ");
+    }
+    text.pop_back();
+    output_file->content = text;
+}
+
 void ConvertMatrixToFile(tokenMatrix * output_matrix, fileData * output_file){
     std::string text;
     std::vector <std::string> matrix_line;
@@ -91,30 +102,28 @@ std::vector <std::string> CommonSplit(std::string text, char separator){
     return result;
 }
 
-bool isSymbolOnSymbolTable(std::vector<symbolData> symbol_table, std::string symbol,  int symbol_address){
-    bool is_symbol_on_table = false; 
+int isSymbolOnSymbolTable(std::vector<symbolData> &symbol_table, std::string symbol){
+    int symbol_address = -1;
 
     for(int j = 0; j < symbol_table.size(); j++){
-        if(symbol == symbol_table[j].name){
-            is_symbol_on_table = true;
+        if(symbol.compare(symbol_table[j].name) == 0){
             symbol_address = j;
             break;
         }
     }
 
-    return is_symbol_on_table;
+    return symbol_address;
 }
 
-bool isSymbolDefined(std::vector<symbolData> symbol_table, std::string symbol, int symbol_address){
+bool isSymbolDefined(std::vector<symbolData> &symbol_table, std::string symbol){
     bool is_symbol_defined = false; 
 
     for(int j = 0; j < symbol_table.size(); j++){
         if(symbol == symbol_table[j].name){
             if(symbol_table[j].is_defined){
                 is_symbol_defined = true;
-                symbol_address = j;
+                break;
             }
-            break;
         }
     }
 
@@ -137,10 +146,22 @@ bool isNumber(std::string token){
 
 }
 
-void insertOnListOfDependecies(std::vector<symbolData> symbol_table, int symbol_address, int token_address){
+bool isOperator(std::string token){
+    
+    if((token.compare("SECTION") != 0) && (token.compare("TEXT") != 0) && (token.compare("DATA") != 0) && (token.compare(",") != 0)) {
+        if(!isInstructionOrDirective(token) && !isNumber(token)){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, int token_address){
    symbol_table[symbol_address].list_of_dependencies.insert(symbol_table[symbol_address].list_of_dependencies.end(), token_address );
 }
 
-void insertOnSymbolTable(std::vector<symbolData> symbol_table, symbolData symbol_data ){
+void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbol_data ){
     symbol_table.insert(symbol_table.end(), symbol_data);
 }
+
