@@ -26,6 +26,7 @@ struct tokenMatrix {
 struct symbolData {
     std:: string name;
     int value;
+    bool is_valueRelative;
     bool is_defined;
     bool is_extern;
     std::vector<int> list_of_dependencies;
