@@ -160,14 +160,6 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                 symbol_clean_name = matrix_line[j];
                 symbol_clean_name.erase(remove(symbol_clean_name.begin(), symbol_clean_name.end(), ':'), symbol_clean_name.end());
 
-                // if(symbol_clean_name.compare("EXTERN") == 0){
-                //     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
-                //         insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
-                //     }
-                //     else{
-                //         printf("ERRO - rotulo duplicado\n");
-                //     }
-                // }
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
                         printf("ERRO - rotulo duplicado\n");
@@ -187,6 +179,14 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                 }                
             }
 
+            if(matrix_line[j].compare("EXTERN") == 0){
+                if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
+                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
+                }
+                else{
+                    printf("ERRO - rotulo duplicado\n");
+                }
+            }
             // else if(matrix_line[j].compare("PUBLIC") == 0){
             //     insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
             // }
