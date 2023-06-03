@@ -180,6 +180,9 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
             }
 
             if(matrix_line[j].compare("EXTERN") == 0){
+                if(!isInBegin){
+                    printf("ERRO - EXTERN sem BEGIN");
+                }
                 if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
                     insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
                 }
