@@ -172,6 +172,17 @@ bool isInstructionOrDirective(std::string token){
     return true;
 }
 
+bool isHeader(std::string token){
+    bool found = false;
+
+    if (auto search = op_type_map.find(token); search != op_type_map.end()){
+        if(search->second == 'c')
+        found = true;
+    }
+
+    return found;
+}
+
 bool isNumber(std::string token){
     char *p;
     strtol(token.c_str(), &p, 10);
