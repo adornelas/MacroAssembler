@@ -12,6 +12,13 @@ struct fileData {
     std::string content;
 };
 
+struct outputObj {
+    std::vector<symbolData> use_table;
+    std::vector<symbolData> definition_table;
+    std::vector<symbolData> relative_table;
+    std::vector<std::string> assembled_code;
+};
+
 struct compilationError {
     std::string type;
     std::string message;
