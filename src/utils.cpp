@@ -55,7 +55,14 @@ void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData 
 void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
     std::string text;
     std::string matrix_line;
-
+    
+    text.append("USO");
+    // colocar tabela de USO
+    text.append("DEF");
+    // colocar tabela de DEF
+    text.append("RELATIVOS");
+    // colocar tabela de RELATIVOS
+    text.append("CODE");
     for (int i = 0; i < output_object->assembled_code.size(); i++){
         text.append(output_object->assembled_code[i]);
         text.append(" ");
