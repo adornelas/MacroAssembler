@@ -187,12 +187,18 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     }
                     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
                         insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
-                    }
-                    else{
+                    } else{
                         printf("ERRO - rotulo duplicado\n");
                     }
                 } else if(matrix_line[j].compare("PUBLIC") == 0){
-                    insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
+                    if(isInBegin){
+                        printf("ERRO - EXTERN sem BEGIN\n");
+                    }
+                    if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
+                        insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
+                    } else {
+                        printf("ERRO - rotulo duplicado\n");
+                    }
                 }
             } else if(isOperator(matrix_line[j])){ 
                 operand_quantity++;
