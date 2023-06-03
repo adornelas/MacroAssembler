@@ -191,7 +191,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                         printf("ERRO - rotulo duplicado\n");
                     }
                 } else if(matrix_line[j].compare("PUBLIC") == 0){
-                    if(isInBegin){
+                    if(!isInBegin){
                         printf("ERRO - EXTERN sem BEGIN\n");
                     }
                     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
