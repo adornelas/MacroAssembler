@@ -17,6 +17,8 @@ bool isSymbolDefined(std::vector<symbolData> &symbol_table, std::string symbol);
 bool isInstructionOrDirective(std::string token);
 bool isNumber(std::string token);
 bool isOperator(std::string token);
+bool isHeader(std::string token);
+
 void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, int token_address);
 void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbol_data );
 
