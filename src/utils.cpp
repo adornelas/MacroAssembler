@@ -52,6 +52,18 @@ void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData 
     output_file->content = text;
 }
 
+void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
+    std::string text;
+    std::string matrix_line;
+
+    for (int i = 0; i < output_object->assembled_code.size(); i++){
+        text.append(output_object->assembled_code[i]);
+        text.append(" ");
+    }
+    text.pop_back();
+    output_file->content = text;
+}
+
 void ConvertMatrixToFile(tokenMatrix * output_matrix, fileData * output_file){
     std::string text;
     std::vector <std::string> matrix_line;
