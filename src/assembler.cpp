@@ -75,7 +75,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                 else {
                     list_aux.clear();
                     list_aux.insert(list_aux.end(), value);
-                    insertOnSymbolTable(symbol_table, {matrix_line[j], -1, false, list_aux});
+                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1,.is_defined = false,.list_of_dependencies = list_aux});
                     output_object.insert(output_object.end(), "-1");
                 }
             }
