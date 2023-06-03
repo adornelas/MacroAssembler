@@ -1,6 +1,5 @@
 #include "../include/preprocessor.hpp"
 
-// #TODO: Lidar com diretiva CONST (verificar se está no formato correto)
 void PreProcessing(fileData *input_file, fileData *output_file)
 {
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
@@ -90,10 +89,14 @@ void CleanMatrix(tokenMatrix * input_matrix){
         matrix_line = input_matrix->matrix[i];
 
         for (int j = 0; j < input_matrix->matrix[i].size(); j++){
-            if(input_matrix->matrix[i][j] == "CONST" && input_matrix->matrix[i][j+1][0] == '0' && input_matrix->matrix[i][j+1][1] == 'X') {
-                long li_hex = std::stol(input_matrix->matrix[i][j+1],nullptr,16);
-                input_matrix->matrix[i].pop_back();
-                input_matrix->matrix[i].push_back(std::to_string(li_hex));
+            if(input_matrix->matrix[i][j] == "CONST"){
+                if(input_matrix->matrix[i][j+1][0] == '-' && input_matrix->matrix[i][j+1][1] == '0' && input_matrix->matrix[i][j+1][2] == 'X') {
+                    printf("ERRO - diretiva CONST não aceita número negativo em hexadecimal\n");
+                } else if(input_matrix->matrix[i][j+1][0] == '0' && input_matrix->matrix[i][j+1][1] == 'X'){
+                    long li_hex = std::stol(input_matrix->matrix[i][j+1],nullptr,16);
+                    input_matrix->matrix[i].pop_back();
+                    input_matrix->matrix[i].push_back(std::to_string(li_hex));
+                }
             }
         }
     }
