@@ -155,6 +155,10 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                 symbol_clean_name = matrix_line[j];
                 symbol_clean_name.erase(remove(symbol_clean_name.begin(), symbol_clean_name.end(), ':'), symbol_clean_name.end());
 
+                if(symbol_clean_name == "EXTERN"){
+                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
+                }
+
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
                         printf("ERRO - rotulo duplicado\n");
