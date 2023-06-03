@@ -12,13 +12,6 @@ struct fileData {
     std::string content;
 };
 
-struct outputObj {
-    std::vector<symbolData> use_table;
-    std::vector<symbolData> definition_table;
-    std::vector<symbolData> relative_table;
-    std::vector<std::string> assembled_code;
-};
-
 struct compilationError {
     std::string type;
     std::string message;
@@ -37,6 +30,13 @@ struct symbolData {
     bool is_defined;
     bool is_extern;
     std::vector<int> list_of_dependencies;
+};
+
+struct outputObj {
+    std::vector<symbolData> use_table;
+    std::vector<symbolData> definition_table;
+    std::vector<symbolData> relative_table;
+    std::vector<std::string> assembled_code;
 };
 
 #endif
