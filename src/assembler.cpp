@@ -55,7 +55,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                         }
                     }
                 }else{
-                    insertOnSymbolTable(symbol_table, {symbol_clean_name, current_line_address, true});
+                    insertOnSymbolTable(symbol_table, {.name = symbol_clean_name,.value = current_line_address,.is_defined = true});
                 }                
             }
             else if(isOperator(matrix_line[j])){ 
