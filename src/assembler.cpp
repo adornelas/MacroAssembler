@@ -70,6 +70,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                     else {
                         symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
                         insertOnListOfDependecies(symbol_table, symbol_address, value);
+                        output_object.insert(output_object.end(), matrix_line[j]);
                     }
                 }
                 else {
@@ -203,15 +204,14 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                     list_aux.clear();
                     list_aux.insert(list_aux.end(), value);
                     insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1,.is_defined = false,.list_of_dependencies = list_aux});
-                    output_object.insert(output_object.end(), "-1");
+                    output_object.insert(output_object.end(), matrix_line[j]);
                 }
             }
             else if(isInstructionOrDirective(matrix_line[j])){
                 current_line_size += op_size_map.find(matrix_line[j])->second;;
 
                 if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0)){
-                    opcode = stol(op_code_map.find(matrix_line[j])->second);
-                    output_object.insert(output_object.end(), std::to_string(opcode));
+                    output_object.insert(output_object.end(), op_code_map.find(matrix_line[j])->second);
                 }
 
                 if((matrix_line[j].compare("CONST") == 0)){
