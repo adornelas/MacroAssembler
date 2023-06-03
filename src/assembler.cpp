@@ -177,8 +177,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                 }else{
                     insertOnSymbolTable(symbol_table, {.name = symbol_clean_name,.value = current_line_address,.is_defined = true});
                 }                
-            }
-            if(isHeader(matrix_line[j])){
+            } else if(isHeader(matrix_line[j])){
                 if(matrix_line[j].compare("BEGIN") == 0){
                     isInBegin = true;
                     didItEnd = 0;
@@ -195,8 +194,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                 } else if(matrix_line[j].compare("PUBLIC") == 0){
                     insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
                 }
-            }
-            else if(isOperator(matrix_line[j])){ 
+            } else if(isOperator(matrix_line[j])){ 
                 operand_quantity++;
                 value = current_line_address + operand_quantity;
                 
@@ -216,8 +214,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1,.is_defined = false,.list_of_dependencies = list_aux});
                     output_object->assembled_code.insert(output_object->assembled_code.end(), matrix_line[j]);
                 }
-            }
-            else if(isInstructionOrDirective(matrix_line[j])){
+            } else if(isInstructionOrDirective(matrix_line[j])){
                 current_line_size += op_size_map.find(matrix_line[j])->second;;
 
                 if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0)  && (matrix_line[j].compare("END") != 0)){
