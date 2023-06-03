@@ -56,13 +56,27 @@ void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
     std::string text;
     std::string matrix_line;
     
-    text.append("USO");
-    // colocar tabela de USO
-    text.append("DEF");
-    // colocar tabela de DEF
-    text.append("RELATIVOS");
+    text.append("USO\n");
+    for (int i = 0; i < output_object->use_table.size(); i++){
+        text.append(output_object->use_table[i].name);
+        text.append(" ");
+        text.append(std::to_string(output_object->use_table[i].value));
+        text.append("\n");
+
+    }
+
+    text.append("DEF\n");
+    for (int i = 0; i < output_object->definition_table.size(); i++){
+        text.append(output_object->definition_table[i].name);
+        text.append(" ");
+        text.append(std::to_string(output_object->definition_table[i].value));
+        text.append("\n");
+    }
+
+    text.append("RELATIVOS\n");
     // colocar tabela de RELATIVOS
-    text.append("CODE");
+
+    text.append("CODE\n");
     for (int i = 0; i < output_object->assembled_code.size(); i++){
         text.append(output_object->assembled_code[i]);
         text.append(" ");
