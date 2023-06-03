@@ -8,7 +8,7 @@ void Assembler(fileData *input_file, fileData *output_file){
     std::vector<std::string> output_object;
 
     ConvertFileToMatrix(input_file, input_matrix);
-    TranslateAssemblyToObject(input_matrix, output_object);
+    TranslateModuleToObject(input_matrix, output_object);
     ConvertArrayObjectToFile(output_object, output_file);
 
     delete input_matrix;
