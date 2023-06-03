@@ -5,11 +5,11 @@
 void Assembler(fileData *input_file, fileData *output_file){
     
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
-    std::vector<std::string> output_object;
+    outputObj *output_object = new outputObj{};
 
     ConvertFileToMatrix(input_file, input_matrix);
     TranslateModuleToObject(input_matrix, output_object);
-    ConvertArrayObjectToFile(output_object, output_file);
+    ConvertModuleToFile(output_object, output_file);
 
     delete input_matrix;
 }
@@ -128,7 +128,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
     }
 }
 
-void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string> &output_object){
+void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object){
     std::vector<std::string> matrix_line;
     std::vector<symbolData> symbol_table;
     std::vector<symbolData> use_table;
@@ -171,7 +171,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                         symbol_table[symbol_address].value = current_line_address;
                     
                         for(int l = 0; l < symbol_table[symbol_address].list_of_dependencies.size(); l++){
-                            output_object[symbol_table[symbol_address].list_of_dependencies[l]] = std::to_string(symbol_table[symbol_address].value);
+                            output_object->assembled_code[symbol_table[symbol_address].list_of_dependencies[l]] = std::to_string(symbol_table[symbol_address].value);
                         }
                     }
                 }else{
@@ -190,9 +190,9 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                     printf("ERRO - rotulo duplicado\n");
                 }
             }
-            // else if(matrix_line[j].compare("PUBLIC") == 0){
-            //     insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
-            // }
+            else if(matrix_line[j].compare("PUBLIC") == 0){
+                insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
+            }
             else if(isOperator(matrix_line[j])){ 
                 operand_quantity++;
                 value = current_line_address + operand_quantity;
@@ -200,7 +200,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                 if(isSymbolOnSymbolTable(symbol_table, matrix_line[j]) != -1){
                     if(isSymbolDefined(symbol_table, matrix_line[j])){
                         symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
-                        output_object.insert(output_object.end(), std::to_string(symbol_table[symbol_address].value));
+                        output_object->assembled_code.insert(output_object->assembled_code.end(), std::to_string(symbol_table[symbol_address].value));
                     }
                     else {
                         symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
@@ -211,7 +211,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                     list_aux.clear();
                     list_aux.insert(list_aux.end(), value);
                     insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1,.is_defined = false,.list_of_dependencies = list_aux});
-                    output_object.insert(output_object.end(), matrix_line[j]);
+                    output_object->assembled_code.insert(output_object->assembled_code.end(), matrix_line[j]);
                 }
             }
             else if(isInstructionOrDirective(matrix_line[j])){
@@ -219,7 +219,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
 
                 if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0) && (matrix_line[j].compare("BEGIN") != 0) && (matrix_line[j].compare("END") != 0) && (matrix_line[j].compare("EXTERN") != 0 && (matrix_line[j].compare("PUBLIC") != 0))){
                     opcode = stol(op_code_map.find(matrix_line[j])->second);
-                    output_object.insert(output_object.end(), std::to_string(opcode));
+                    output_object->assembled_code.insert(output_object->assembled_code.end(), std::to_string(opcode));
                 }
 
                 if(matrix_line[j].compare("BEGIN") == 0){
@@ -236,7 +236,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
 
                 if((matrix_line[j].compare("CONST") == 0)){
                     if(matrix_line.size() > j + 1) {
-                        output_object.insert(output_object.end(), matrix_line[j+1]);
+                        output_object->assembled_code.insert(output_object->assembled_code.end(), matrix_line[j+1]);
                     }
                     else{
                         printf("ERRO - CONST SEM VALOR");
@@ -246,11 +246,11 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
                 if((matrix_line[j].compare("SPACE") == 0)){
                     if(matrix_line.size() > j + 1) {
                         for(int m = 0; m < stol(matrix_line[j+1]); m++){
-                            output_object.insert(output_object.end(), "0");
+                            output_object->assembled_code.insert(output_object->assembled_code.end(), "0");
                         }
                     }
                     else{
-                        output_object.insert(output_object.end(), "0");
+                        output_object->assembled_code.insert(output_object->assembled_code.end(), "0");
                     }
                 }
             }
