@@ -178,20 +178,23 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     insertOnSymbolTable(symbol_table, {.name = symbol_clean_name,.value = current_line_address,.is_defined = true});
                 }                
             }
-
-            if(matrix_line[j].compare("EXTERN") == 0){
-                if(!isInBegin){
-                    printf("ERRO - EXTERN sem BEGIN");
+            if(isHeader(matrix_line[j])){
+                if(matrix_line[j].compare("BEGIN") == 0){
+                    isInBegin = true;
+                    didItEnd = 0;
+                } else if(matrix_line[j].compare("EXTERN") == 0){
+                    if(!isInBegin){
+                        printf("ERRO - EXTERN sem BEGIN\n");
+                    }
+                    if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
+                        insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
+                    }
+                    else{
+                        printf("ERRO - rotulo duplicado\n");
+                    }
+                } else if(matrix_line[j].compare("PUBLIC") == 0){
+                    insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
                 }
-                if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
-                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
-                }
-                else{
-                    printf("ERRO - rotulo duplicado\n");
-                }
-            }
-            else if(matrix_line[j].compare("PUBLIC") == 0){
-                insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
             }
             else if(isOperator(matrix_line[j])){ 
                 operand_quantity++;
@@ -217,15 +220,12 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
             else if(isInstructionOrDirective(matrix_line[j])){
                 current_line_size += op_size_map.find(matrix_line[j])->second;;
 
-                if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0) && (matrix_line[j].compare("BEGIN") != 0) && (matrix_line[j].compare("END") != 0) && (matrix_line[j].compare("EXTERN") != 0 && (matrix_line[j].compare("PUBLIC") != 0))){
+                if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0)  && (matrix_line[j].compare("END") != 0)){
                     opcode = stol(op_code_map.find(matrix_line[j])->second);
                     output_object->assembled_code.insert(output_object->assembled_code.end(), std::to_string(opcode));
                 }
 
-                if(matrix_line[j].compare("BEGIN") == 0){
-                    isInBegin = true;
-                    didItEnd = 0;
-                } else if(matrix_line[j].compare("END") == 0) {
+                if(matrix_line[j].compare("END") == 0) {
                     if(isInBegin){
                         didItEnd = 1;
                         isInBegin = false;
