@@ -141,6 +141,9 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
     int value = 0; // usada para auxiliar na contagem da posição do operando
     int current_line_address = 0;
     int current_line_size = 0;
+    bool isInBegin = false;
+    int didItEnd = 1;   // inicializa em 1 pra identificar erros
+
 
     int opcode;
 
@@ -149,6 +152,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
     for(int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
         operand_quantity = 0;
+
 
         for(int j = 0; j < matrix_line.size(); j++){
                         
@@ -210,8 +214,21 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
             else if(isInstructionOrDirective(matrix_line[j])){
                 current_line_size += op_size_map.find(matrix_line[j])->second;;
 
-                if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0)){
-                    output_object.insert(output_object.end(), op_code_map.find(matrix_line[j])->second);
+                if((matrix_line[j].compare("CONST") != 0) && (matrix_line[j].compare("SPACE") != 0) && (matrix_line[j].compare("BEGIN") != 0) && (matrix_line[j].compare("END") != 0) && (matrix_line[j].compare("EXTERN") != 0 && (matrix_line[j].compare("PUBLIC") != 0))){
+                    opcode = stol(op_code_map.find(matrix_line[j])->second);
+                    output_object.insert(output_object.end(), std::to_string(opcode));
+                }
+
+                if(matrix_line[j].compare("BEGIN") == 0){
+                    isInBegin = true;
+                    didItEnd = 0;
+                } else if(matrix_line[j].compare("END") == 0) {
+                    if(isInBegin){
+                        didItEnd = 1;
+                        isInBegin = false;
+                    } else {
+                        didItEnd = -1;
+                    }
                 }
 
                 if((matrix_line[j].compare("CONST") == 0)){
@@ -250,6 +267,11 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, std::vector<std::string>
     }
 
     if(symbol_found){
-        printf("ERRO - o simbolo nao é definido\n ");
+        printf("ERRO - o simbolo nao é definido\n");
+    }
+    if(didItEnd ==  0){
+        printf("ERRO - END não encontrado após BEGIN\n");
+    } else if(didItEnd == -1){
+        printf("ERRO - END sem BEGIN\n");
     }
 }
