@@ -212,6 +212,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     else {
                         symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
                         insertOnListOfDependecies(symbol_table, symbol_address, value);
+                        output_object->assembled_code.insert(output_object->assembled_code.end(), matrix_line[j]);
                     }
                 }
                 else {
