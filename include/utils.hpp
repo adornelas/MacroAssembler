@@ -12,6 +12,10 @@ void ConvertMatrixToFile(tokenMatrix * output_matrix, fileData * output_file);
 std::vector <std::string> Split(std::string text, char separator);
 std::vector <std::string> CommonSplit(std::string text, char separator);
 
+/// @brief Verifies if the given symbol is in the symbol table
+/// @param symbol_table reference to the symbol table
+/// @param symbol symbol to search for
+/// @return -1 in case the symbol is not there, or the symbol address if it is
 int isSymbolOnSymbolTable(std::vector<symbolData> &symbol_table, std::string symbol);
 bool isSymbolDefined(std::vector<symbolData> &symbol_table, std::string symbol);
 bool isInstructionOrDirective(std::string token);
