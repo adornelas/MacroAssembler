@@ -163,9 +163,10 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
                         printf("ERRO - rotulo duplicado\n");
-                    }
-                    else{
-                        
+                    // }else if(){
+
+                    }else{
+
                         symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
                         symbol_table[symbol_address].is_defined = true;
                         symbol_table[symbol_address].value = current_line_address;
@@ -190,17 +191,20 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     } else{
                         printf("ERRO - rotulo duplicado\n");
                     }
+                    j++;
                 } else if(matrix_line[j].compare("PUBLIC") == 0){
                     if(!isInBegin){
-                        printf("ERRO - EXTERN sem BEGIN\n");
+                        printf("ERRO - PUBLIC sem BEGIN\n");
                     }
-                    if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
-                        insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
-                    } else {
+                    if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) != -1){
                         printf("ERRO - rotulo duplicado\n");
+                    } else {
+                        insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.is_defined == false});
+                        insertOnSymbolTable(definition_table, {.name = matrix_line[j+1]});
                     }
+                    j++;
                 }
-            } else if(isOperator(matrix_line[j])){ 
+            } else if(isOperator(matrix_line[j])){
                 operand_quantity++;
                 value = current_line_address + operand_quantity;
                 
