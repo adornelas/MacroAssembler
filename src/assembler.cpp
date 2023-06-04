@@ -206,7 +206,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                 
                 if(isSymbolOnSymbolTable(symbol_table, matrix_line[j]) != -1){
                     if(isSymbolDefined(symbol_table, matrix_line[j])){
-                        symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
+                        symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
                         output_object->assembled_code.insert(output_object->assembled_code.end(), std::to_string(symbol_table[symbol_address].value));
                     }
                     else {
