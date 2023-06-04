@@ -144,7 +144,6 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
     bool isInBegin = false;
     int didItEnd = 1;   // inicializa em 1 pra identificar erros
 
-
     int opcode;
 
     std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
@@ -163,10 +162,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
                         printf("ERRO - rotulo duplicado\n");
-                    // }else if(){
-
                     }else{
-
                         symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
                         symbol_table[symbol_address].is_defined = true;
                         symbol_table[symbol_address].value = current_line_address;
@@ -187,7 +183,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                         printf("ERRO - EXTERN sem BEGIN\n");
                     }
                     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
-                        insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = current_line_address,.is_valueRelative = false ,.is_extern = true});
+                        insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = 0,.is_valueRelative = false ,.is_defined = true ,.is_extern = true});
                     } else{
                         printf("ERRO - rotulo duplicado\n");
                     }
