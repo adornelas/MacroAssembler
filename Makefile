@@ -1,4 +1,4 @@
-CPP      = g++
+CPP      = g++ -std=c++2a
 SRCS     = $(shell find . -name "*.cpp")
 OBJ      = $(addprefix obj/,$(SRCS:%.cpp=%.o)) 
 DIR      = $(addprefix obj/,$(shell find src/ -type d)) 
