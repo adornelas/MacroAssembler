@@ -190,6 +190,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     }
                     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
                         insertOnSymbolTable(symbol_table, {.name = matrix_line[j+1],.value = 0,.is_valueRelative = false ,.is_defined = true ,.is_extern = true});
+                        insertOnSymbolTable(use_table, {.name = matrix_line[j+1]});
                     } else{
                         printf("ERRO - rotulo duplicado\n");
                     }
