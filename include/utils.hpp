@@ -18,6 +18,7 @@ std::vector <std::string> CommonSplit(std::string text, char separator);
 /// @return -1 in case the symbol is not there, or the symbol address if it is
 int isSymbolOnSymbolTable(std::vector<symbolData> &symbol_table, std::string symbol);
 bool isSymbolDefined(std::vector<symbolData> &symbol_table, std::string symbol);
+bool isSymbolExtern(std::vector<symbolData> &symbol_table, std::string symbol);
 bool isInstructionOrDirective(std::string token);
 bool isNumber(std::string token);
 bool isOperator(std::string token);
