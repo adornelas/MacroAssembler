@@ -163,6 +163,21 @@ bool isSymbolDefined(std::vector<symbolData> &symbol_table, std::string symbol){
     return is_symbol_defined;
 }
 
+bool isSymbolExtern(std::vector<symbolData> &symbol_table, std::string symbol){
+    bool is_symbol_extern = false; 
+
+    for(int j = 0; j < symbol_table.size(); j++){
+        if(symbol == symbol_table[j].name){
+            if(symbol_table[j].is_extern){
+                is_symbol_extern = true;
+                break;
+            }
+        }
+    }
+
+    return is_symbol_extern;
+}
+
 bool isInstructionOrDirective(std::string token){
     
     if(op_size_map.find(token) == op_size_map.end()){
