@@ -170,6 +170,12 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                         for(int l = 0; l < symbol_table[symbol_address].list_of_dependencies.size(); l++){
                             output_object->assembled_code[symbol_table[symbol_address].list_of_dependencies[l]] = std::to_string(symbol_table[symbol_address].value);
                         }
+
+                        symbol_address = isSymbolOnSymbolTable(definition_table, symbol_clean_name);
+                        if(symbol_address != -1){
+                            definition_table[symbol_address].value = current_line_address;
+                            output_object->definition_table.insert(output_object->definition_table.end(), definition_table[symbol_address]);
+                        }
                     }
                 }else{
                     insertOnSymbolTable(symbol_table, {.name = symbol_clean_name,.value = current_line_address,.is_defined = true});
@@ -281,4 +287,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
     } else if(didItEnd == -1){
         printf("ERRO - END sem BEGIN\n");
     }
+
+    // TODO: passa endereços para tabela de definições
+    
 }
