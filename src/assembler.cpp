@@ -251,8 +251,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                         didItEnd = -1;
                     }
                 }
-
-                if((matrix_line[j].compare("CONST") == 0)){
+                else if((matrix_line[j].compare("CONST") == 0)){
                     if(matrix_line.size() > j + 1) {
                         output_object->assembled_code.insert(output_object->assembled_code.end(), matrix_line[j+1]);
                     }
@@ -260,8 +259,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                         printf("ERRO - CONST SEM VALOR");
                     }
                 }
-
-                if((matrix_line[j].compare("SPACE") == 0)){
+                else if((matrix_line[j].compare("SPACE") == 0)){
                     if(matrix_line.size() > j + 1) {
                         for(int m = 0; m < stol(matrix_line[j+1]); m++){
                             output_object->assembled_code.insert(output_object->assembled_code.end(), "0");
