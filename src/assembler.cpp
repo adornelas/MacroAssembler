@@ -172,9 +172,16 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                         }
 
                         symbol_address = isSymbolOnSymbolTable(definition_table, symbol_clean_name);
+                        // TODO: Verificar acesso de endereços de matrix_line ([j+1], [j+2])
                         if(symbol_address != -1){
-                            definition_table[symbol_address].value = current_line_address;
-                            output_object->definition_table.insert(output_object->definition_table.end(), definition_table[symbol_address]);
+                            if(matrix_line[j+1].compare("CONST") == 0){
+                                definition_table[symbol_address].value = std::stoi(matrix_line[j+2]);
+                                output_object->definition_table.insert(output_object->definition_table.end(), definition_table[symbol_address]);
+                            }
+                            else {
+                                definition_table[symbol_address].value = current_line_address;
+                                output_object->definition_table.insert(output_object->definition_table.end(), definition_table[symbol_address]);
+                            }
                         }
                     }
                 }else{
