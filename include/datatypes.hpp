@@ -35,7 +35,7 @@ struct symbolData {
 struct outputObj {
     std::vector<symbolData> use_table;
     std::vector<symbolData> definition_table;
-    std::vector<symbolData> relative_table;
+    std::vector<std::string> relative_table;
     std::vector<std::string> assembled_code;
 };
 
