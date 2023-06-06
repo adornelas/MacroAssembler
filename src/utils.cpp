@@ -74,7 +74,13 @@ void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
     }
 
     text.append("RELATIVOS\n");
-    // colocar tabela de RELATIVOS
+    for (int i = 0; i < output_object->relative_table.size(); i++){
+        text.append(output_object->relative_table[i]);
+        text.append(" ");
+    }
+    text.pop_back();
+    text.append("\n");
+
 
     text.append("CODE\n");
     for (int i = 0; i < output_object->assembled_code.size(); i++){
