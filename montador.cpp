@@ -33,7 +33,7 @@ int main(int argc, char **argv)
             return 1;
         }
 
-        PreProcessing(input_file, output_file_pre_processing);
+        PreProcess(input_file, output_file_pre_processing);
 
         ofstream opfs(output_file_pre_processing->name);
         opfs << output_file_pre_processing->content;
