@@ -11,7 +11,6 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    std::string teste;
     if (argc < 2 && argc > 5) {
         cout << "Quantidade de argumentos invalida (" << argc << "),\ninsira até 4 arquivos no programa: nomedoprograma1.asm nomedoprograma2.asm nomedoprograma3.asm nomedoprograma4.asm" << endl;
         return 1;
@@ -23,6 +22,8 @@ int main(int argc, char **argv)
         output_file_pre_processed->name.append("_preprocessed.asm");
         fileData *output_file_assembled = new fileData{.name = argv[1]};
         output_file_assembled->name.append(".exc");
+        fileData *output_file_pre_processing = new fileData{.name = "preprocessedFile"};
+        fileData *output_file_assembler = new fileData{.name = "assembledFile"};
 
         ifstream ifs(input_file->name);
         stringstream buffer;
@@ -35,21 +36,21 @@ int main(int argc, char **argv)
             return 1;
         }
 
-        PreProcess(input_file, output_file_pre_processed);
+        PreProcess(input_file, output_file_pre_processing);
 
-        ofstream opfs(output_file_pre_processed->name);
-        opfs << output_file_pre_processed->content;
+        ofstream opfs(output_file_pre_processing->name);
+        opfs << output_file_pre_processing->content;
         opfs.close();
 
-        Assemble(output_file_pre_processed, output_file_assembled);
+        Assemble(output_file_pre_processing, output_file_assembler);
 
-        ofstream ofs(output_file_assembled->name);
-        ofs << output_file_assembled->content;
+        ofstream ofs(output_file_assembler->name);
+        ofs << output_file_assembler->content;
         ofs.close();
 
         delete input_file;
-        delete output_file_pre_processed;
-        delete output_file_assembled;
+        delete output_file_pre_processing;
+        delete output_file_assembler;
     }
     else{
         for (int i = 1; i < argc; i++) {
