@@ -5,11 +5,11 @@
 void Assemble(fileData *input_file, fileData *output_file){
     
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
-    outputObj *output_object = new outputObj{};
+    std::vector<std::string> output_object;
 
     ConvertFileToMatrix(input_file, input_matrix);
-    TranslateModuleToObject(input_matrix, output_object);
-    ConvertModuleToFile(output_object, output_file);
+    TranslateAssemblyToObject(input_matrix, output_object);
+    ConvertArrayObjectToFile(output_object, output_file);
 
     delete input_matrix;
 }
