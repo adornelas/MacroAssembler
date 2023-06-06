@@ -234,6 +234,7 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
                     insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1,.is_defined = false,.list_of_dependencies = list_aux});
                     output_object->assembled_code.insert(output_object->assembled_code.end(), matrix_line[j]);
                 }
+                output_object->relative_table.insert(output_object->relative_table.end(), std::to_string(value));
             } else if(isInstructionOrDirective(matrix_line[j])){
                 current_line_size += op_size_map.find(matrix_line[j])->second;;
 
@@ -294,7 +295,5 @@ void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object
     } else if(didItEnd == -1){
         printf("ERRO - END sem BEGIN\n");
     }
-
-    // TODO: passa endereços para tabela de definições
     
 }
