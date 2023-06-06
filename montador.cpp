@@ -39,7 +39,7 @@ int main(int argc, char **argv)
         opfs << output_file_pre_processing->content;
         opfs.close();
 
-        Assembler(output_file_pre_processing, output_file_assembler);
+        Assemble(output_file_pre_processing, output_file_assembler);
 
         ofstream ofs(output_file_assembler->name);
         ofs << output_file_assembler->content;
