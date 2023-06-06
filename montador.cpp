@@ -11,6 +11,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+    std::string teste;
     if (argc < 2 && argc > 5) {
         cout << "Quantidade de argumentos invalida (" << argc << "),\ninsira até 4 arquivos no programa: nomedoprograma1.asm nomedoprograma2.asm nomedoprograma3.asm nomedoprograma4.asm" << endl;
         return 1;
