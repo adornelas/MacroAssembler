@@ -14,6 +14,18 @@ void Assemble(fileData *input_file, fileData *output_file){
     delete input_matrix;
 }
 
+void AssembleModule(fileData *input_file, fileData *output_file){
+    
+    tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
+    outputObj *output_object = new outputObj{};
+
+    ConvertFileToMatrix(input_file, input_matrix);
+    TranslateModuleToObject(input_matrix, output_object);
+    ConvertModuleToFile(output_object, output_file);
+
+    delete input_matrix;
+}
+
 void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::string> &output_object){
     std::vector<std::string> matrix_line;
     std::vector<symbolData> symbol_table;
