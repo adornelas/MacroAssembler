@@ -27,6 +27,7 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
     int current_line_size = 0;
 
     int opcode;
+    bool has_section_text = false;
 
     std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
 
@@ -104,11 +105,21 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
                     }
                 }
             }
+
+            else{
+                if(matrix_line[j] == "TEXT"){
+                    has_section_text = true;
+                }
+            }
         }
 
         current_line_address += current_line_size;
         current_line_size = 0;
 
+    }
+
+    if(!has_section_text){
+        printf("[Arquivo %s] ERRO SINTÁTICO: SECTION TEXT ausente\n",input_file->name.c_str());
     }
 
     bool symbol_found = false;
