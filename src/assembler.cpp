@@ -8,13 +8,13 @@ void Assembler(fileData *input_file, fileData *output_file){
     std::vector<std::string> output_object;
 
     ConvertFileToMatrix(input_file, input_matrix);
-    TranslateAssemblyToObject(input_matrix, output_object);
+    TranslateAssemblyToObject(input_file, input_matrix, output_object);
     ConvertArrayObjectToFile(output_object, output_file);
 
     delete input_matrix;
 }
 
-void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::string> &output_object){
+void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, std::vector<std::string> &output_object){
     std::vector<std::string> matrix_line;
     std::vector<symbolData> symbol_table;
     std::string symbol_clean_name; // usado para guardar o rotulo sem ':'
@@ -42,7 +42,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
 
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
-                        printf("ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", i + 1);
+                        printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", input_file->name.c_str(), i + 1);
                     }
                     else{
                         
@@ -122,6 +122,6 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
     }
 
     if(symbol_found){
-        printf("ERRO SEMÂNTICO: simbolo indefinido (linha %d)\n ", error_line);
+        printf("[Arquivo %s] ERRO SEMÂNTICO: simbolo indefinido (linha %d)\n ",input_file->name.c_str(), error_line);
     }
 }
