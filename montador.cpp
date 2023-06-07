@@ -18,8 +18,10 @@ int main(int argc, char **argv)
     else if(argc == 2) {
         fileData *input_file = new fileData{.name = argv[1]};
         input_file->name.append(".asm");
-        fileData *output_file_pre_processing = new fileData{.name = "preprocessedFile"};
-        fileData *output_file_assembler = new fileData{.name = "assembledFile"};
+        fileData *output_file_pre_processed = new fileData{.name = argv[1]};
+        output_file_pre_processed->name.append("_preprocessed.asm");
+        fileData *output_file_assembled = new fileData{.name = argv[1]};
+        output_file_assembled->name.append(".exc");
 
         ifstream ifs(input_file->name);
         stringstream buffer;
@@ -32,21 +34,21 @@ int main(int argc, char **argv)
             return 1;
         }
 
-        PreProcess(input_file, output_file_pre_processing);
+        PreProcess(input_file, output_file_pre_processed);
 
-        ofstream opfs(output_file_pre_processing->name);
-        opfs << output_file_pre_processing->content;
+        ofstream opfs(output_file_pre_processed->name);
+        opfs << output_file_pre_processed->content;
         opfs.close();
 
-        Assemble(output_file_pre_processing, output_file_assembler);
+        Assemble(output_file_pre_processed, output_file_assembled);
 
-        ofstream ofs(output_file_assembler->name);
-        ofs << output_file_assembler->content;
+        ofstream ofs(output_file_assembled->name);
+        ofs << output_file_assembled->content;
         ofs.close();
 
         delete input_file;
-        delete output_file_pre_processing;
-        delete output_file_assembler;
+        delete output_file_pre_processed;
+        delete output_file_assembled;
     }
     else{
         for (int i = 1; i < argc; i++) {
