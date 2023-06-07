@@ -32,6 +32,7 @@ struct symbolData {
     int value;
     bool is_defined;
     std::vector<int> list_of_dependencies;
+    int line = 0;
 };
 
 #endif

@@ -42,7 +42,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
 
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
-                        printf("ERRO - rotulo duplicado\n");
+                        printf("ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", i + 1);
                     }
                     else{
                         
@@ -55,7 +55,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                         }
                     }
                 }else{
-                    insertOnSymbolTable(symbol_table, {symbol_clean_name, current_line_address, true});
+                    insertOnSymbolTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .line = (i+1)});
                 }                
             }
             else if(isOperator(matrix_line[j])){ 
@@ -76,7 +76,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                 else {
                     list_aux.clear();
                     list_aux.insert(list_aux.end(), value);
-                    insertOnSymbolTable(symbol_table, {matrix_line[j], -1, false, list_aux});
+                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1, .is_defined= false,.list_of_dependencies = list_aux, .line = (i+1)});
                     output_object.insert(output_object.end(), matrix_line[j]);
                 }
             }
@@ -90,9 +90,6 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                 if((matrix_line[j].compare("CONST") == 0)){
                     if(matrix_line.size() > j + 1) {
                         output_object.insert(output_object.end(), matrix_line[j+1]);
-                    }
-                    else{
-                        printf("ERRO - CONST SEM VALOR");
                     }
                 }
 
@@ -115,14 +112,16 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
     }
 
     bool symbol_found = false;
+    int error_line = 0;
     for(int i = 0; i < symbol_table.size(); i++){
         if(!symbol_table[i].is_defined){
             symbol_found = true;
+            error_line = symbol_table[i].line;
             break;
         }
     }
 
     if(symbol_found){
-        printf("ERRO - o simbolo nao é definido\n ");
+        printf("ERRO SEMÂNTICO: simbolo indefinido (linha %d)\n ", error_line);
     }
 }
