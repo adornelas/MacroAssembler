@@ -6,6 +6,6 @@
 #include "utils.hpp"
 
 void Assembler(fileData *input_file, fileData *output_file);
-void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::string> &output_object);
+void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, std::vector<std::string> &output_object);
 
 #endif
