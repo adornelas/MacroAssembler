@@ -2,19 +2,7 @@
 
 // #TODO: SPACE pode aceitar argumento. Logo é possível fazer rótulos como X + 2 (com espaços)
 // #TODO: O comando COPY deve separar os argumentos por “,” COM espaços antes e depois da “,”(ex: COPY A1 , A2)
-void Assemble(fileData *input_file, fileData *output_file){
-    
-    tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
-    std::vector<std::string> output_object;
-
-    ConvertFileToMatrix(input_file, input_matrix);
-    TranslateAssemblyToObject(input_matrix, output_object);
-    ConvertArrayObjectToFile(output_object, output_file);
-
-    delete input_matrix;
-}
-
-void AssembleModule(fileData *input_file, fileData *output_file){
+void Assembler(fileData *input_file, fileData *output_file){
     
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
     outputObj *output_object = new outputObj{};

@@ -1,7 +1,7 @@
 #include "../include/preprocessor.hpp"
 
 // #TODO: Lidar com diretiva CONST (verificar se está no formato correto e passar para decimal)
-void PreProcess(fileData* input_file, fileData* output_file) {
+void PreProcessing(fileData* input_file, fileData* output_file) {
     tokenMatrix* input_matrix = new tokenMatrix{ .lines = 0 };
     tokenMatrix* output_matrix = new tokenMatrix{ .lines = 0 };
 
