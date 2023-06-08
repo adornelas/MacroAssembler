@@ -2,6 +2,9 @@
 
 void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
     std::vector<objectData> modules(input_matrixes.size());
+    std::map<std::string, int> correction_factor;
+    std::vector<symbolData> global_definition_table;
+
 
     SeparateMatrixes(input_matrixes, modules);
 
@@ -9,6 +12,13 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
         ConvertArrayObjectToFile(modules.begin()->assembled_code, output_file);
     }
     else{
+        for(auto current_module : modules){
+            // percorrer a definition_table de current_module e colocar todos os símbolos do vetor em globa_defintion_table
+            for(auto current_symbol : current_module.definition_table){
+                global_definition_table.insert(global_definition_table.end(), {.name = current_symbol.name, .value = current_symbol.value});
+            }
+        }
+
         // Ligar
     }
 }
