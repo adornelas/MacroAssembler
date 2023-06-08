@@ -29,15 +29,23 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
     int opcode;
     bool has_section_text = false;
 
+    int line_label = 0;
+    bool label_duplicated = false;
+    int error_line = 0;
+    int error_line_duplicated = 0;
+    long int const_number = 0;
+
     std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
 
     for(int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
         operand_quantity = 0;
+        line_label = 0;
 
         for(int j = 0; j < matrix_line.size(); j++){
                         
             if(isLabel(matrix_line[j])){
+                line_label++;
                 symbol_clean_name = matrix_line[j];
                 symbol_clean_name.erase(remove(symbol_clean_name.begin(), symbol_clean_name.end(), ':'), symbol_clean_name.end());
 
@@ -90,14 +98,25 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
 
                 if((matrix_line[j].compare("CONST") == 0)){
                     if(matrix_line.size() > j + 1) {
-                        output_object.insert(output_object.end(), matrix_line[j+1]);
+                        if(isLabel(matrix_line[j+1])){
+                            error_line_duplicated = true;
+                        }else{
+                            if(isNumber(matrix_line[j+1])){
+                                const_number = toNumber(matrix_line[j+1]);
+                                output_object.insert(output_object.end(), std::to_string(const_number));
+                            }
+                        }
                     }
                 }
 
                 if((matrix_line[j].compare("SPACE") == 0)){
                     if(matrix_line.size() > j + 1) {
-                        for(int m = 0; m < stol(matrix_line[j+1]); m++){
-                            output_object.insert(output_object.end(), "0");
+                        if(isLabel(matrix_line[j+1])){
+                            error_line_duplicated = true;
+                        }else{
+                            for(int m = 0; m < stol(matrix_line[j+1]); m++){
+                                output_object.insert(output_object.end(), "0");
+                            }
                         }
                     }
                     else{
@@ -116,6 +135,11 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
         current_line_address += current_line_size;
         current_line_size = 0;
 
+        if(line_label > 1){
+            label_duplicated = true;
+            error_line_duplicated = i + 1;
+        }
+
     }
 
     if(!has_section_text){
@@ -123,7 +147,6 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
     }
 
     bool symbol_found = false;
-    int error_line = 0;
     for(int i = 0; i < symbol_table.size(); i++){
         if(!symbol_table[i].is_defined){
             symbol_found = true;
@@ -135,4 +158,10 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
     if(symbol_found){
         printf("[Arquivo %s] ERRO SEMÂNTICO: simbolo indefinido (linha %d)\n ",input_file->name.c_str(), error_line);
     }
+
+    if(label_duplicated){
+        printf("[Arquivo %s] ERRO SEMÂNTICO: dois rótulos na mesma linha (linha %d)\n",input_file->name.c_str(), error_line_duplicated );
+
+    }
+
 }
