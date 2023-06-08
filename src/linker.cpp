@@ -18,12 +18,19 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
 
             for(auto current_symbol : current_module.definition_table){
                 // insere os símbolos de cada uma das tabelas de definição na tabela global de definições 
-                global_definition_table.insert(global_definition_table.end(), {.name = current_symbol.name, .value = current_symbol.value});
+                global_definition_table.insert(global_definition_table.end(), {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
             }
         }
 
-        // TODO: atualiza os valores da tabela global de definições a partir do fator de correção
-
+        // atualiza os valores da tabela global de definições a partir do fator de correção
+        for(auto symbol : global_definition_table){
+            // procura o símbolo na tabela de fatores de correção e soma os valores
+            if (auto search = correction_factor.find(symbol.module_index); search != correction_factor.end()){
+                if(search->first == symbol.module_index){
+                    symbol.value = symbol.value + search->second;
+                }
+            }
+        }
         for(auto current_module : modules){
             // TODO: Corrigir os endereços das entradas da tabela de uso, utilizando a tabela globalde definições
             // TODO: Corrigir os endereços do código usando os fatores de correção
