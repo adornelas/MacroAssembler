@@ -2,7 +2,7 @@
 
 void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
     std::vector<objectData> modules(input_matrixes.size());
-    std::map<std::string, int> correction_factor;
+    std::map<int, int> correction_factor;   // <index, correction_factor>
     std::vector<symbolData> global_definition_table;
 
 
@@ -13,13 +13,26 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
     }
     else{
         for(auto current_module : modules){
-            // percorrer a definition_table de current_module e colocar todos os símbolos do vetor em globa_defintion_table
+            // insere fator de correção de cada um dos módulos
+            correction_factor.insert(correction_factor.end(), {current_module.index, current_module.assembled_code.size()});
+
             for(auto current_symbol : current_module.definition_table){
+                // insere os símbolos de cada uma das tabelas de definição na tabela global de definições 
                 global_definition_table.insert(global_definition_table.end(), {.name = current_symbol.name, .value = current_symbol.value});
             }
         }
 
-        // Ligar
+        // TODO: atualiza os valores da tabela global de definições a partir do fator de correção
+
+        for(auto current_module : modules){
+            // TODO: Corrigir os endereços das entradas da tabela de uso, utilizando a tabela globalde definições
+            // TODO: Corrigir os endereços do código usando os fatores de correção
+            // TODO: Corrigir os endereços relativos usando os fatores de correção
+        }
+
+        //TODO: Gerar código executável e salvar em arquivo
+
+        
     }
 }
 
