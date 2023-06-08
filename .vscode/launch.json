@@ -17,7 +17,7 @@
         "miDebuggerPath": "C:\\TDM-GCC-32\\gdb32\\bin\\gdb32.exe"
       },
       "program": "${workspaceFolder}/linker",
-      "args": ["teste"],
+      "args": ["teste1"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
