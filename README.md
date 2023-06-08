@@ -51,3 +51,5 @@ Os seguintes erros estão sendo identificados e classificados como:
 
 Vale notar que o arquivo onde os erros estão sendo indicados é o arquivo pré-processado, com nome de ```preprocessedFile```.
 
+Assumiu-se que o usuario nao vai usar numeros com pontos flutuantes
+
