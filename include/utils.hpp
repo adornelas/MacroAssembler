@@ -28,6 +28,6 @@ void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol
 void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbol_data );
 
 void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData * output_file);
-void ConvertModuleToFile(outputObj * output_object, fileData * output_file);
+void ConvertModuleToFile(objectData * output_object, fileData * output_file);
 
 #endif

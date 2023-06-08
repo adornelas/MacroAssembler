@@ -17,7 +17,7 @@ void Assemble(fileData *input_file, fileData *output_file){
 void AssembleModule(fileData *input_file, fileData *output_file){
     
     tokenMatrix *input_matrix = new tokenMatrix{.lines = 0};
-    outputObj *output_object = new outputObj{};
+    objectData *output_object = new objectData{};
 
     ConvertFileToMatrix(input_file, input_matrix);
     TranslateModuleToObject(input_matrix, output_object);
@@ -140,7 +140,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
     }
 }
 
-void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object){
+void TranslateModuleToObject(tokenMatrix *input_matrix, objectData *output_object){
     std::vector<std::string> matrix_line;
     std::vector<symbolData> symbol_table;
     std::vector<symbolData> use_table;

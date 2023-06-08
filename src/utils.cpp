@@ -52,7 +52,7 @@ void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData 
     output_file->content = text;
 }
 
-void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
+void ConvertModuleToFile(objectData * output_object, fileData * output_file){
     std::string text;
     std::string matrix_line;
     

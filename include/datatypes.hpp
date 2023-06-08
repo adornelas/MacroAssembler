@@ -32,11 +32,17 @@ struct symbolData {
     std::vector<int> list_of_dependencies;
 };
 
-struct outputObj {
+struct objectData {
     std::vector<symbolData> use_table;
     std::vector<symbolData> definition_table;
     std::vector<std::string> relative_table;
     std::vector<std::string> assembled_code;
 };
+
+struct Module
+{
+    /* data */
+};
+
 
 #endif

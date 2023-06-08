@@ -8,7 +8,7 @@
 void Assemble(fileData *input_file, fileData *output_file);
 void AssembleModule(fileData *input_file, fileData *output_file);
 void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::string> &output_object);
-void TranslateModuleToObject(tokenMatrix *input_matrix, outputObj *output_object);
+void TranslateModuleToObject(tokenMatrix *input_matrix, objectData *output_object);
 
 
 #endif
