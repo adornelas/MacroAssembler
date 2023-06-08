@@ -399,9 +399,8 @@ FodyWeavers.xsd
 
 # Specific case for our work
 montador 
-preprocessedFile 
-assembledFile
-teste_preprocessed.asm
+*.asm
+*.exc
 
 /.vscode/settings.json
 teste.asm
