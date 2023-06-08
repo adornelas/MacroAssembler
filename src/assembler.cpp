@@ -127,6 +127,9 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
                         if(isLabel(matrix_line[j+1])){
                             error_line_duplicated = true;
                         }else{
+                            if(matrix_line[j+1].starts_with("-0X")){
+                                printf("[Arquivo %s] ERRO SINTÁTICO: diretiva CONST não aceita número negativo em hexadecimal (linha %d)\n",input_file->name.c_str(), i + 1 );
+                            }
                             if(isNumber(matrix_line[j+1])){
                                 const_number = toNumber(matrix_line[j+1]);
                                 output_object.insert(output_object.end(), std::to_string(const_number));

@@ -90,9 +90,7 @@ void CleanMatrix(tokenMatrix * input_matrix){
 
         for (int j = 0; j < input_matrix->matrix[i].size(); j++){
             if(input_matrix->matrix[i][j] == "CONST"){
-                if(input_matrix->matrix[i][j+1].starts_with("-0X")) {
-                    printf("ERRO - diretiva CONST não aceita número negativo em hexadecimal\n");
-                } else if(input_matrix->matrix[i][j+1].starts_with("0X")){
+                if(input_matrix->matrix[i][j+1].starts_with("0X")){
                     long hexNumber = std::stol(input_matrix->matrix[i][j+1],nullptr,16);
                     input_matrix->matrix[i].pop_back();
                     input_matrix->matrix[i].push_back(std::to_string(hexNumber));
