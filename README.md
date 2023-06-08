@@ -16,13 +16,13 @@ Observação: os programas foram feitos para linux (Ubuntu), mas o montador foi 
 Para montar o programa, é preciso digitar:
 
 ```
-make clean
+g++ montador.cpp src/*.cpp -o montador -std=c++20
 ```
 
-E depois
+e
 
 ```
-make
+g++ linker.cpp src/*.cpp -o linker -std=c++20
 ```
 
 ### Para tradução do código
