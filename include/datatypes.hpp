@@ -31,6 +31,7 @@ struct symbolData {
     bool is_extern;
     std::vector<int> list_of_dependencies;
     int line = 0;
+    int module_index;
     std::string section;
 };
 
