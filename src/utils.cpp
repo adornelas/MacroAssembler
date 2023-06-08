@@ -11,6 +11,15 @@ bool isLabel(std::string str){
     return false;
 }
 
+bool hasLexicError(std::string token){
+    if(token[0] == '_' || isdigit(token[0])){
+        return true;
+    }
+
+    return false;
+
+}
+
 void ConvertFileToMatrix(fileData * input_file, tokenMatrix * input_matrix){
     int lines = 0;
     std::string temp;

@@ -22,5 +22,6 @@ void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbo
 
 void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData * output_file);
 long int toNumber(std::string token);
+bool hasLexicError(std::string token);
 
 #endif

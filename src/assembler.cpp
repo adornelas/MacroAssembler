@@ -25,29 +25,34 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
     int current_line_size = 0;
 
     int opcode;
-    bool has_section_text = false;
+    std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
 
+    bool has_section_text = false;
     int line_label = 0;
+
     bool label_duplicated = false;
     int error_line_duplicated = 0;
     long int const_number = 0;
-    std::string section="TEXT";
-    std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
     bool hasBegin = false;
     bool hasEnd = false;
-    std::vector<int> error_line_not_begin_end;
-    bool extern_public_without_begin_end = false;
+    std::string section="TEXT";
+
+    bool error_line_without_begin_end = false;
+    bool error_lexic = false;
 
     for(int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
         operand_quantity = 0;
         line_label = 0;
+        error_line_without_begin_end = false;
+        bool error_lexic = false;
+        bool label_duplicated = false;
 
         for(int j = 0; j < matrix_line.size(); j++){
 
             if(matrix_line[j] == "EXTERN" || matrix_line[j] == "PUBLIC"){
                 if(!hasBegin && !hasEnd){
-                    error_line_not_begin_end.insert(error_line_not_begin_end.end(), i + 1);
+                    error_line_without_begin_end = true;
                 }
             }
 
@@ -60,6 +65,10 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
                 line_label++;
                 symbol_clean_name = matrix_line[j];
                 symbol_clean_name.erase(remove(symbol_clean_name.begin(), symbol_clean_name.end(), ':'), symbol_clean_name.end());
+                
+                if(hasLexicError(matrix_line[j])){
+                    error_lexic = true;
+                }
 
                 if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
@@ -76,12 +85,17 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
                         }
                     }
                 }else{
+                    
                     insertOnSymbolTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .line = (i+1)});
                 }                
             }
             else if(isOperator(matrix_line[j])){ 
                 operand_quantity++;
                 value = current_line_address + operand_quantity;
+
+                if(hasLexicError(matrix_line[j])){
+                    error_lexic = true;
+                }
                 
                 if(isSymbolOnSymbolTable(symbol_table, matrix_line[j]) != -1){
                     if(isSymbolDefined(symbol_table, matrix_line[j])){
@@ -151,24 +165,21 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
         current_line_size = 0;
 
         if(line_label > 1){
-            label_duplicated = true;
-            error_line_duplicated = i + 1;
+            printf("[Arquivo %s] ERRO SEMÂNTICO: dois rótulos na mesma linha (linha %d)\n",input_file->name.c_str(), i + 1 );
         }
 
-        if(error_line_not_begin_end.size() > 0){
-            extern_public_without_begin_end = true;
+        if(error_line_without_begin_end){
+            printf("[Arquivo %s] ERRO SEMÂNTICO: EXTERN ou PUBLIC declarados em um arquivo sem BEGIN e END (linha %d)\n",input_file->name.c_str(),i+1);
+        }
+
+        if(error_lexic){
+             printf("[Arquivo %s] ERRO LÉXICO: tokens não podem começar com digitos ou underscore (linha %d)\n",input_file->name.c_str(), i + 1);
         }
 
     }
 
     if(!has_section_text){
         printf("[Arquivo %s] ERRO SINTÁTICO: SECTION TEXT ausente\n",input_file->name.c_str());
-    }
-
-    if(extern_public_without_begin_end){
-        for(int i = 0; i < error_line_not_begin_end.size(); i++){
-            printf("[Arquivo %s] ERRO SEMÂNTICO: EXTERN ou PUBLIC declarados em um arquivo sem BEGIN e END (linha %d)\n",input_file->name.c_str(),error_line_not_begin_end[i]);
-        }
     }
 
     for(int i = 0; i < symbol_table.size(); i++){
@@ -180,11 +191,6 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
                 printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo indefinido(linha %d)\n ",input_file->name.c_str(), symbol_table[i].line);
             }            
         }
-    }
-
-    if(label_duplicated){
-        printf("[Arquivo %s] ERRO SEMÂNTICO: dois rótulos na mesma linha (linha %d)\n",input_file->name.c_str(), error_line_duplicated );
-
     }
 
 }
