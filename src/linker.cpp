@@ -75,6 +75,7 @@ void SeparateMatrixes(std::vector<tokenMatrix> &input_matrixes, std::vector<obje
 
         }
 
+        modules.at(index).index = index;
         modules.at(index).use_table = use_table;
         modules.at(index).definition_table = definition_table;
         modules.at(index).relative_table = relative_table;
