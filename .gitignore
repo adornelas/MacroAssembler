@@ -398,9 +398,13 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Specific case for our work
-montador 
-preprocessedFile 
-assembledFile
+montador
+linker
 
 /.vscode/settings.json
 teste.asm
+teste1.asm
+teste_preprocessed.asm
+teste1_preprocessed.asm
+teste.exc
+teste1.exc
