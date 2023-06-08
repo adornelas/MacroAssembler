@@ -31,10 +31,9 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
 
     int line_label = 0;
     bool label_duplicated = false;
-    int error_line = 0;
     int error_line_duplicated = 0;
     long int const_number = 0;
-
+    std::string section="TEXT";
     std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
 
     for(int i = 0; i < input_matrix->matrix.size(); i++){
@@ -85,7 +84,7 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
                 else {
                     list_aux.clear();
                     list_aux.insert(list_aux.end(), value);
-                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1, .is_defined= false,.list_of_dependencies = list_aux, .line = (i+1)});
+                    insertOnSymbolTable(symbol_table, {.name = matrix_line[j],.value =  -1, .is_defined= false,.list_of_dependencies = list_aux, .line = (i+1), .section=section});
                     output_object.insert(output_object.end(), matrix_line[j]);
                 }
             }
@@ -127,7 +126,10 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
 
             else{
                 if(matrix_line[j] == "TEXT"){
+                    section = "TEXT";
                     has_section_text = true;
+                }else if(matrix_line[j] == "DATA"){
+                    section = "DATA";
                 }
             }
         }
@@ -146,17 +148,15 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
         printf("[Arquivo %s] ERRO SINTÁTICO: SECTION TEXT ausente\n",input_file->name.c_str());
     }
 
-    bool symbol_found = false;
     for(int i = 0; i < symbol_table.size(); i++){
-        if(!symbol_table[i].is_defined){
-            symbol_found = true;
-            error_line = symbol_table[i].line;
-            break;
+        if(!symbol_table[i].is_defined){            
+            if(symbol_table[i].section == "DATA"){
+                printf("[Arquivo %s] ERRO SEMÂNTICO: dado indefinido(linha %d)\n ",input_file->name.c_str(), symbol_table[i].line);
+            }
+            if(symbol_table[i].section == "TEXT"){
+                printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo indefinido(linha %d)\n ",input_file->name.c_str(), symbol_table[i].line);
+            }            
         }
-    }
-
-    if(symbol_found){
-        printf("[Arquivo %s] ERRO SEMÂNTICO: simbolo indefinido (linha %d)\n ",input_file->name.c_str(), error_line);
     }
 
     if(label_duplicated){
