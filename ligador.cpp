@@ -1,6 +1,7 @@
 #include "include/datatypes.hpp"
 #include "include/preprocessor.hpp"
 #include "include/assembler.hpp"
+#include "include/linker.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -19,21 +20,22 @@ int main(int argc, char** argv) {
 
     for (int i = 1; i < argc; i++) {
         fileData* input_file = new fileData{ .name = argv[i] };
-        input_matrixes.push_back({ .lines = 0 });
-
         input_file->name.append(".obj");
+
         ifstream ifs(input_file->name);
         stringstream buffer;
         buffer << ifs.rdbuf();
         input_file->content = buffer.str();
-        ConvertFileToMatrix(input_file, &input_matrixes.at(i));
+
+        ConvertFileToMatrix(input_file, &input_matrixes.at(i-1));
+        
         delete input_file;
     }
 
     fileData* output_file = new fileData{ .name = argv[1] };
     output_file->name.append(".exc");
 
-    // ligador
+    Link(input_matrixes, output_file);
 
     ofstream ofs(output_file->name);
     ofs << output_file->content;
