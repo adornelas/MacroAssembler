@@ -13,7 +13,7 @@ using namespace std;
 int main(int argc, char** argv) {
     vector<tokenMatrix> input_matrixes(argc - 1);
 
-    if (argc < 2 && argc > 5) {
+    if (argc < 2 || argc > 5) {
         cout << "Quantidade de argumentos invalida (" << argc << "),\ninsira até 4 arquivos no programa: nomedoprograma1 nomedoprograma2 nomedoprograma3 nomedoprograma4" << endl;
         return 1;
     }
@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
         input_file->content = buffer.str();
 
         ConvertFileToMatrix(input_file, &input_matrixes.at(i-1));
-        
+
         delete input_file;
     }
 
