@@ -33,6 +33,10 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
     long int const_number = 0;
     std::string section="TEXT";
     std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
+    bool hasBegin = false;
+    bool hasEnd = false;
+    std::vector<int> error_line_not_begin_end;
+    bool extern_public_without_begin_end = false;
 
     for(int i = 0; i < input_matrix->matrix.size(); i++){
         matrix_line = input_matrix->matrix[i];
@@ -40,6 +44,17 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
         line_label = 0;
 
         for(int j = 0; j < matrix_line.size(); j++){
+
+            if(matrix_line[j] == "EXTERN" || matrix_line[j] == "PUBLIC"){
+                if(!hasBegin && !hasEnd){
+                    error_line_not_begin_end.insert(error_line_not_begin_end.end(), i + 1);
+                }
+            }
+
+            if(matrix_line[j] == "BEGIN" || matrix_line[j] == "END"){
+                hasBegin = true;
+                hasEnd= true;
+            }
                         
             if(isLabel(matrix_line[j])){
                 line_label++;
@@ -140,10 +155,20 @@ void TranslateAssemblyToObject(fileData *input_file,tokenMatrix *input_matrix, s
             error_line_duplicated = i + 1;
         }
 
+        if(error_line_not_begin_end.size() > 0){
+            extern_public_without_begin_end = true;
+        }
+
     }
 
     if(!has_section_text){
         printf("[Arquivo %s] ERRO SINTÁTICO: SECTION TEXT ausente\n",input_file->name.c_str());
+    }
+
+    if(extern_public_without_begin_end){
+        for(int i = 0; i < error_line_not_begin_end.size(); i++){
+            printf("[Arquivo %s] ERRO SEMÂNTICO: EXTERN ou PUBLIC declarados em um arquivo sem BEGIN e END (linha %d)\n",input_file->name.c_str(),error_line_not_begin_end[i]);
+        }
     }
 
     for(int i = 0; i < symbol_table.size(); i++){
