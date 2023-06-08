@@ -6,7 +6,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
     SeparateMatrixes(input_matrixes, modules);
 
     if(input_matrixes.size() == 1){
-        // Apenas colocar no código de saída
+        ConvertArrayObjectToFile(modules.begin()->assembled_code, output_file);
     }
     else{
         // Ligar
