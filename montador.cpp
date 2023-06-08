@@ -18,8 +18,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    for(int i = 0; i < argc ; i++){
-        fileData *input_file = new fileData{.name = argv[1]};
+    for(int i = 0; i < argc - 1 ; i++){
+        fileData *input_file = new fileData{.name = argv[i+1]};
         input_file->name.append(".asm");
 
         name_pre_processed_file = argv[i+1];
