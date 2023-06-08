@@ -139,11 +139,28 @@ bool isInstructionOrDirective(std::string token){
     return true;
 }
 
+long int toNumber(std::string token){
+    char *p;
+    long int number;
+    number = strtol(token.c_str(), &p, 10);
+    if (*p == 0){
+        return number;
+    }
+
+    number = strtol(token.c_str(), &p, 16);
+    return number;
+}
+
 bool isNumber(std::string token){
+    
     char *p;
     strtol(token.c_str(), &p, 10);
-    return *p == 0;
+    if (*p == 0){
+        return true;
+    }
 
+    strtol(token.c_str(), &p, 16);
+    return *p == 0;
 }
 
 bool isOperator(std::string token){
