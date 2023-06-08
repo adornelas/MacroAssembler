@@ -25,6 +25,8 @@ E depois
 make
 ```
 
+É importante notar que a versão de c++ utilizada é a c++20!
+
 ### Para tradução do código
 
 ```

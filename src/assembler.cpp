@@ -64,7 +64,7 @@ void TranslateAssemblyToObject(tokenMatrix *input_matrix, std::vector<std::strin
                 
                 if(isSymbolOnSymbolTable(symbol_table, matrix_line[j]) != -1){
                     if(isSymbolDefined(symbol_table, matrix_line[j])){
-                        symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
+                        symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
                         output_object.insert(output_object.end(), std::to_string(symbol_table[symbol_address].value));
                     }
                     else {
