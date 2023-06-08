@@ -21,5 +21,6 @@ void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol
 void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbol_data );
 
 void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData * output_file);
+long int toNumber(std::string token);
 
 #endif
