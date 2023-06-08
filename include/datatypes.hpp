@@ -23,15 +23,20 @@ struct tokenMatrix {
     std::vector<std::vector<std::string>> matrix;
 };
 
-struct equIdentifier {
-    std::string name;
-    int value;
-};
 struct symbolData {
     std:: string name;
     int value;
+    bool is_valueRelative;
     bool is_defined;
+    bool is_extern;
     std::vector<int> list_of_dependencies;
+};
+
+struct outputObj {
+    std::vector<symbolData> use_table;
+    std::vector<symbolData> definition_table;
+    std::vector<std::string> relative_table;
+    std::vector<std::string> assembled_code;
 };
 
 #endif

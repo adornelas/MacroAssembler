@@ -52,6 +52,45 @@ void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData 
     output_file->content = text;
 }
 
+void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
+    std::string text;
+    std::string matrix_line;
+    
+    text.append("USO\n");
+    for (int i = 0; i < output_object->use_table.size(); i++){
+        text.append(output_object->use_table[i].name);
+        text.append(" ");
+        text.append(std::to_string(output_object->use_table[i].value));
+        text.append("\n");
+
+    }
+
+    text.append("DEF\n");
+    for (int i = 0; i < output_object->definition_table.size(); i++){
+        text.append(output_object->definition_table[i].name);
+        text.append(" ");
+        text.append(std::to_string(output_object->definition_table[i].value));
+        text.append("\n");
+    }
+
+    text.append("RELATIVOS\n");
+    for (int i = 0; i < output_object->relative_table.size(); i++){
+        text.append(output_object->relative_table[i]);
+        text.append(" ");
+    }
+    text.pop_back();
+    text.append("\n");
+
+
+    text.append("CODE\n");
+    for (int i = 0; i < output_object->assembled_code.size(); i++){
+        text.append(output_object->assembled_code[i]);
+        text.append(" ");
+    }
+    text.pop_back();
+    output_file->content = text;
+}
+
 void ConvertMatrixToFile(tokenMatrix * output_matrix, fileData * output_file){
     std::string text;
     std::vector <std::string> matrix_line;
@@ -130,6 +169,21 @@ bool isSymbolDefined(std::vector<symbolData> &symbol_table, std::string symbol){
     return is_symbol_defined;
 }
 
+bool isSymbolExtern(std::vector<symbolData> &symbol_table, std::string symbol){
+    bool is_symbol_extern = false; 
+
+    for(int j = 0; j < symbol_table.size(); j++){
+        if(symbol == symbol_table[j].name){
+            if(symbol_table[j].is_extern){
+                is_symbol_extern = true;
+                break;
+            }
+        }
+    }
+
+    return is_symbol_extern;
+}
+
 bool isInstructionOrDirective(std::string token){
     
     if(op_size_map.find(token) == op_size_map.end()){
@@ -137,6 +191,17 @@ bool isInstructionOrDirective(std::string token){
     }
 
     return true;
+}
+
+bool isHeader(std::string token){
+    bool found = false;
+
+    if (auto search = op_type_map.find(token); search != op_type_map.end()){
+        if(search->second == 'c')
+        found = true;
+    }
+
+    return found;
 }
 
 bool isNumber(std::string token){
