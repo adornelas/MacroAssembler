@@ -39,10 +39,4 @@ struct objectData {
     std::vector<std::string> assembled_code;
 };
 
-struct Module
-{
-    /* data */
-};
-
-
 #endif
