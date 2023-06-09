@@ -12,25 +12,33 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
         ConvertArrayObjectToFile(modules.begin()->assembled_code, output_file);
     }
     else{
+        objectData last_module;
         for(auto current_module : modules){
             // insere fator de correção de cada um dos módulos
-            correction_factor.insert(correction_factor.end(), {current_module.index, current_module.assembled_code.size()});
+            if(current_module.index != 0){
+                correction_factor.insert(correction_factor.end(), {current_module.index, last_module.assembled_code.size()});
+            }
+            else{
+                correction_factor.insert(correction_factor.end(), {current_module.index, 0});
+            }
 
             for(auto current_symbol : current_module.definition_table){
                 // insere os símbolos de cada uma das tabelas de definição na tabela global de definições 
                 global_definition_table.insert(global_definition_table.end(), {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
             }
+            last_module = current_module;
         }
 
         // atualiza os valores da tabela global de definições a partir do fator de correção
-        for(auto symbol : global_definition_table){
-            // procura o símbolo na tabela de fatores de correção e soma os valores
-            if (auto search = correction_factor.find(symbol.module_index); search != correction_factor.end()){
-                if(search->first == symbol.module_index){
-                    symbol.value = symbol.value + search->second;
+        for (int i = 0; i < global_definition_table.size(); i++)
+        {
+            for(auto correction : correction_factor){
+                if(correction.first == global_definition_table[i].module_index){
+                    global_definition_table[i].value += correction.second;
                 }
             }
-        }
+        }        
+
         for(auto current_module : modules){
             // TODO: Corrigir os endereços das entradas da tabela de uso, utilizando a tabela globalde definições
             // TODO: Corrigir os endereços do código usando os fatores de correção
