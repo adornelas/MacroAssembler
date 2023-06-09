@@ -12,14 +12,13 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
         ConvertArrayObjectToFile(modules.begin()->assembled_code, output_file);
     }
     else{
-        objectData last_module;
+        int accumulated_module_size = 0;
         std::string text;
 
         for(auto current_module : modules){
             // insere fator de correção de cada um dos módulos
-            // TODO: CORRIGIR FATOR DE CORREÇÃO PARA MAIS DE 2 CÓDIGOS
             if(current_module.index != 0){
-                correction_factor.insert(correction_factor.end(), {current_module.index, last_module.assembled_code.size()});
+                correction_factor.insert(correction_factor.end(), {current_module.index, accumulated_module_size});
             }
             else{
                 correction_factor.insert(correction_factor.end(), {current_module.index, 0});
@@ -29,7 +28,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
                 // insere os símbolos de cada uma das tabelas de definição na tabela global de definições
                 insertOnSymbolTable(global_definition_table, {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
             }
-            last_module = current_module;
+            accumulated_module_size += current_module.assembled_code.size();
         }
 
         // atualiza os valores da tabela global de definições a partir do fator de correção
