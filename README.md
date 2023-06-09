@@ -58,3 +58,19 @@ Vale notar que o arquivo onde os erros estão sendo indicados é o arquivo pré-
 
 Assumiu-se que o usuario nao vai usar numeros com pontos flutuantes
 
+### Uso do rotulo de SPACE com argumentos
+
+Sempre usar espaço como
+
+```
+X + 2 
+```
+
+e não 
+
+```
+X+2 
+```
+
+Não é verificado se isso acontece com ```X:SPACE``` ou qualquer outro tipo de argumento no rotulo de X. Entao qualquer rotulo
+pode aceitar operação com + ou - .
