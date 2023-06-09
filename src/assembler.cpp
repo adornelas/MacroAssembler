@@ -67,7 +67,22 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                     error_lexic = true;
                 }
 
-                if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
+                if(symbol_clean_name.compare("EXTERN") == 0){
+
+                    if(!isInBegin){
+                        printf("[Arquivo %s] ERRO SEMÂNTICO: EXTERN sem BEGIN (linha %d)\n",input_file->name.c_str(), i + 1);
+                    }
+                    
+                    if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
+                        insertOnTable(symbol_table, {.name = matrix_line[j+1],.value = 0,.is_valueRelative = false ,.is_defined = true ,.is_extern = true});
+                        insertOnTable(use_table, {.name = matrix_line[j+1]});
+                    } else{
+                        printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", input_file->name.c_str(), i + 1);
+                    }
+                    j++;
+
+                }
+                else if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
                     if(isSymbolDefined(symbol_table, symbol_clean_name)){
                         printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", input_file->name.c_str(), i + 1);
                     }
@@ -110,22 +125,7 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                     isInBegin = true;
                     didItEnd = 0;
                 }
-
-                else if(matrix_line[j].compare("EXTERN") == 0){
-
-                    if(!isInBegin){
-                        printf("[Arquivo %s] ERRO SEMÂNTICO: EXTERN sem BEGIN (linha %d)\n",input_file->name.c_str(), i + 1);
-                    }
-                    
-                    if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
-                        insertOnTable(symbol_table, {.name = matrix_line[j+1],.value = 0,.is_valueRelative = false ,.is_defined = true ,.is_extern = true});
-                        insertOnTable(use_table, {.name = matrix_line[j+1]});
-                    } else{
-                        printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", input_file->name.c_str(), i + 1);
-                    }
-                    j++;
-
-                } else if(matrix_line[j].compare("PUBLIC") == 0){
+                else if(matrix_line[j].compare("PUBLIC") == 0){
                     if(!isInBegin){
                         printf("[Arquivo %s] ERRO SEMÂNTICO: PUBLIC sem BEGIN (linha %d)\n",input_file->name.c_str(), i + 1);
                     }
