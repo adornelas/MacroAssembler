@@ -29,6 +29,7 @@ struct symbolData {
     bool is_valueRelative;
     bool is_defined;
     bool is_extern;
+    bool is_begin;
     std::vector<int> list_of_dependencies;
     int line = 0;
     int module_index;
