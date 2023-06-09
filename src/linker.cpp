@@ -15,6 +15,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
         objectData last_module;
         for(auto current_module : modules){
             // insere fator de correção de cada um dos módulos
+            // TODO: CORRIGIR FATOR DE CORREÇÃO PARA MAIS DE 2 CÓDIGOS
             if(current_module.index != 0){
                 correction_factor.insert(correction_factor.end(), {current_module.index, last_module.assembled_code.size()});
             }
@@ -30,7 +31,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
         }
 
         // atualiza os valores da tabela global de definições a partir do fator de correção
-        for (int i = 0; i < global_definition_table.size(); i++){
+        for(int i = 0; i < global_definition_table.size(); i++){
             for(auto correction : correction_factor){
                 if(correction.first == global_definition_table[i].module_index){
                     global_definition_table[i].value += correction.second;
@@ -38,20 +39,25 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
             }
         }    
 
-        for (int i = 0; i < modules.size(); i++)
+        for(int i = 0; i < modules.size(); i++)
         {
             objectData current_module = modules[i];
             int symbol_address;
 
             // Corrigir os endereços das entradas da tabela de uso, utilizando a tabela global de definições
-            for (int j = 0; j < modules[i].use_table.size(); j++){  
+            for(int j = 0; j < modules[i].use_table.size(); j++){  
                 symbol_address = isSymbolOnSymbolTable(global_definition_table, modules[i].use_table[j].name);
                 modules[i].assembled_code.at(modules[i].use_table[j].value) = std::to_string(global_definition_table[symbol_address].value);
             }
             
-            // TODO: Corrigir os endereços do código usando os fatores de correção
-            
-            // TODO: Corrigir os endereços relativos usando os fatores de correção
+            // Corrigir os endereços relativos usando os fatores de correção
+            for(int j = 0; j < modules[i].relative_table.size(); j++){
+                int posicaoEmAssembledCode = std::stoi(modules[i].relative_table[j]);
+                int valorEmAssembledCode = std::stoi(modules[i].assembled_code.at(std::stoi(modules[i].relative_table[j])));
+                int fatordecorrecao = correction_factor.at(i);
+                modules[i].assembled_code.at(std::stoi(modules[i].relative_table[j])) = std::to_string(std::stoi(modules[i].assembled_code.at(std::stoi(modules[i].relative_table[j]))) + correction_factor.at(i));
+            }
+
         }
 
         //TODO: Gerar código executável e salvar em arquivo
