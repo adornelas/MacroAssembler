@@ -13,6 +13,8 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
     }
     else{
         objectData last_module;
+        std::string text;
+
         for(auto current_module : modules){
             // insere fator de correção de cada um dos módulos
             // TODO: CORRIGIR FATOR DE CORREÇÃO PARA MAIS DE 2 CÓDIGOS
@@ -60,9 +62,15 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
 
         }
 
-        //TODO: Gerar código executável e salvar em arquivo
-
-        
+        // Gerar código executável e salvar em arquivo
+        for(int i = 0; i < modules.size(); i++){
+            for(int j = 0; j < modules[i].assembled_code.size(); j++){
+                text.append(modules[i].assembled_code[j]);
+                text.append(" ");
+            }
+        }
+        text.pop_back();
+        output_file->content = text;
     }
 }
 
