@@ -174,7 +174,9 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                 }
 
                 if(hasToLink) {
-                    output_object.relative_table.insert(output_object.relative_table.end(), std::to_string(value));
+                    if(isSymbolOnSymbolTable(definition_table, matrix_line[j]) != -1){
+                        output_object.relative_table.insert(output_object.relative_table.end(), std::to_string(value));
+                    }
                 }
             }
             else if(isInstructionOrDirective(matrix_line[j])){
