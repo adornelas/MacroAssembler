@@ -63,6 +63,5 @@ int main(int argc, char **argv)
         delete output_file_assembled;
         delete input_file;
         delete output_file_pre_processed;
-
     }
 }

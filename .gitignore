@@ -398,6 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Specific case for our work
+montador
+linker
 montador 
 *.asm
 *.exc

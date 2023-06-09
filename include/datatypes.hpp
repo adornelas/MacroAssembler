@@ -23,18 +23,26 @@ struct tokenMatrix {
     std::vector<std::vector<std::string>> matrix;
 };
 
+struct dependeciesData{
+    int address;
+    int space_arg = 0;
+};
+
 struct symbolData {
     std:: string name;
     int value;
     bool is_valueRelative;
     bool is_defined;
     bool is_extern;
-    std::vector<int> list_of_dependencies;
+    bool is_begin;
+    std::vector<dependeciesData> list_of_dependencies;
     int line = 0;
+    int module_index;
     std::string section;
 };
 
 struct outputObj {
+    int index;
     std::vector<symbolData> use_table;
     std::vector<symbolData> definition_table;
     std::vector<std::string> relative_table;

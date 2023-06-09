@@ -16,13 +16,13 @@ Observação: os programas foram feitos para linux (Ubuntu), mas o montador foi 
 Para montar o programa, é preciso digitar:
 
 ```
-make clean
+g++ montador.cpp src/*.cpp -o montador -std=c++20
 ```
 
-E depois
+e
 
 ```
-make
+g++ linker.cpp src/*.cpp -o linker -std=c++20
 ```
 
 É importante notar que a versão de c++ utilizada é a c++20!
@@ -58,3 +58,19 @@ Vale notar que o arquivo onde os erros estão sendo indicados é o arquivo pré-
 
 Assumiu-se que o usuario nao vai usar numeros com pontos flutuantes
 
+### Uso do rotulo de SPACE com argumentos
+
+Sempre usar espaço como
+
+```
+X + 2 
+```
+
+e não 
+
+```
+X+2 
+```
+
+Não é verificado se isso acontece com ```X:SPACE``` ou qualquer outro tipo de argumento no rotulo de X. Entao qualquer rotulo
+pode aceitar operação com + ou - .

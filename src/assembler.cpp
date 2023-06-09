@@ -30,7 +30,7 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
     int current_line_address = 0;
     int current_line_size = 0;
 
-    std::vector<int> list_aux; // usada para auxiliar na criação da lista de dependencias
+    std::vector<dependeciesData> list_aux; // usada para auxiliar na criação da lista de dependencias
 
     bool has_section_text = false;
     int line_label = 0;
@@ -67,46 +67,7 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                     error_lexic = true;
                 }
 
-                if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
-                    if(isSymbolDefined(symbol_table, symbol_clean_name)){
-                        printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", input_file->name.c_str(), i + 1);
-                    }
-                    else{
-                        symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
-                        symbol_table[symbol_address].is_defined = true;
-                        symbol_table[symbol_address].value = current_line_address;
-                    
-                        for(int l = 0; l < symbol_table[symbol_address].list_of_dependencies.size(); l++){
-                            output_object.assembled_code[symbol_table[symbol_address].list_of_dependencies[l]] = std::to_string(symbol_table[symbol_address].value);
-                        }
-
-                        if(hasToLink){
-                            symbol_address = isSymbolOnSymbolTable(definition_table, symbol_clean_name);
-                            if(symbol_address != -1){
-                                    if(matrix_line[j+1].compare("CONST") == 0){
-                                        definition_table[symbol_address].value = std::stoi(matrix_line[j+2]);
-                                        output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
-                                    }
-                                    else {
-                                        definition_table[symbol_address].value = current_line_address;
-                                        output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
-                                    }
-                                
-                            }
-                        }
-                    }
-                }else{
-                    insertOnTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .line = (i+1)});
-                }                
-            }
-            else if(isHeader(matrix_line[j])){
-
-                if(matrix_line[j].compare("BEGIN") == 0){
-                    isInBegin = true;
-                    didItEnd = 0;
-                }
-
-                else if(matrix_line[j].compare("EXTERN") == 0){
+                if(symbol_clean_name.compare("EXTERN") == 0){
 
                     if(!isInBegin){
                         printf("[Arquivo %s] ERRO SEMÂNTICO: EXTERN sem BEGIN (linha %d)\n",input_file->name.c_str(), i + 1);
@@ -120,7 +81,50 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                     }
                     j++;
 
-                } else if(matrix_line[j].compare("PUBLIC") == 0){
+                }
+                else if(isSymbolOnSymbolTable(symbol_table, symbol_clean_name) != -1){
+                    if(isSymbolDefined(symbol_table, symbol_clean_name)){
+                        printf("[Arquivo %s] ERRO SEMÂNTICO: rótulo duplicado (linha %d)\n", input_file->name.c_str(), i + 1);
+                    }
+                    else{
+                        symbol_address = isSymbolOnSymbolTable(symbol_table, symbol_clean_name);
+                        symbol_table[symbol_address].is_defined = true;
+                        symbol_table[symbol_address].value = current_line_address;
+                    
+                        for(int l = 0; l < symbol_table[symbol_address].list_of_dependencies.size(); l++){
+                            output_object.assembled_code[symbol_table[symbol_address].list_of_dependencies[l].address] = std::to_string(symbol_table[symbol_address].value + symbol_table[symbol_address].list_of_dependencies[l].space_arg );
+                        }
+
+                        if(hasToLink){
+                            symbol_address = isSymbolOnSymbolTable(definition_table, symbol_clean_name);
+                            if(symbol_address != -1){
+                                if(matrix_line[j+1].compare("CONST") == 0){
+                                    definition_table[symbol_address].value = std::stoi(matrix_line[j+2]);
+                                    output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
+                                }
+                                else {
+                                    definition_table[symbol_address].value = current_line_address;
+                                    output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    if(hasToLink && matrix_line[j+1].compare("BEGIN") == 0){
+                        insertOnTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .is_begin = true, .line = (i+1)});
+                    }
+                    else{
+                        insertOnTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .line = (i+1)});
+                    }
+                }                
+            }
+            else if(isHeader(matrix_line[j])){
+
+                if(matrix_line[j].compare("BEGIN") == 0){
+                    isInBegin = true;
+                    didItEnd = 0;
+                }
+                else if(matrix_line[j].compare("PUBLIC") == 0){
                     if(!isInBegin){
                         printf("[Arquivo %s] ERRO SEMÂNTICO: PUBLIC sem BEGIN (linha %d)\n",input_file->name.c_str(), i + 1);
                     }
@@ -128,7 +132,13 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
                         insertOnTable(symbol_table, {.name = matrix_line[j+1],.is_defined = false});
                     }
-                    
+                    else {
+                        symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]);
+                        if(symbol_table[symbol_address].is_begin == true){
+                            output_object.definition_table.insert(output_object.definition_table.end(), symbol_table[symbol_address]);
+                        }
+                    }
+
                     if(isSymbolOnSymbolTable(definition_table, matrix_line[j+1]) == -1){
                         insertOnTable(definition_table, {.name = matrix_line[j+1]});
                     }
@@ -148,9 +158,21 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                 }
                 
                 if(isSymbolOnSymbolTable(symbol_table, matrix_line[j]) != -1){
+                    symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
                     if(isSymbolDefined(symbol_table, matrix_line[j])){
-                        symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
-                        output_object.assembled_code.insert(output_object.assembled_code.end(), std::to_string(symbol_table[symbol_address].value));
+
+                        dependeciesData auxData = {.address = value, .space_arg = 0};
+                        if(j + 1 < matrix_line.size() && j + 2 < matrix_line.size()){
+                            if(matrix_line[j+1] == "-" || matrix_line[j+1] == "+"){
+                                if(isNumber(matrix_line[j+2])){
+                                    std::string auxString = matrix_line[j+1] + matrix_line[j+2];
+                                    long int aux_space_arg = strtol(auxString.c_str(), nullptr, 10);
+                                    auxData.space_arg = aux_space_arg;
+                                }
+                            }
+                        }
+
+                        output_object.assembled_code.insert(output_object.assembled_code.end(), std::to_string(symbol_table[symbol_address].value + auxData.space_arg));
 
                         if(hasToLink){
                             symbol_address = isSymbolOnSymbolTable(use_table, matrix_line[j]);
@@ -161,20 +183,45 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                         }                    
                     }
                     else {
-                        symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j]);
-                        insertOnListOfDependecies(symbol_table, symbol_address, value);
-                        output_object.assembled_code.insert(output_object.assembled_code.end(), matrix_line[j]);
+                        
+                        dependeciesData auxData = {.address = value, .space_arg = 0};
+                        if((j + 1) < matrix_line.size() && (j + 2) < matrix_line.size()){
+                            if(matrix_line[j+1] == "-" || matrix_line[j+1] == "+"){
+                                if(isNumber(matrix_line[j+2])){
+                                    std::string auxString = matrix_line[j+1] + matrix_line[j+2];
+                                    long int aux_space_arg = strtol(auxString.c_str(), nullptr, 10);
+                                    auxData.space_arg = aux_space_arg;
+                                }
+                            }
+                        }
+
+                        insertOnListOfDependecies(symbol_table, symbol_address, auxData);
+                        output_object.assembled_code.insert(output_object.assembled_code.end(), matrix_line[j]);                        
                     }
                 }
                 else {
                     list_aux.clear();
-                    list_aux.insert(list_aux.end(), value);
+
+                    dependeciesData auxData = {.address = value, .space_arg = 0};
+                    if(j + 1 < matrix_line.size() && j + 2 < matrix_line.size()){
+                        if(matrix_line[j+1] == "-" || matrix_line[j+1] == "+"){
+                            if(isNumber(matrix_line[j+2])){
+                                std::string auxString = matrix_line[j+1] + matrix_line[j+2];
+                                long int aux_space_arg = strtol(auxString.c_str(), nullptr, 10);
+                                auxData.space_arg = aux_space_arg;
+                            }
+                        }
+                    }
+
+                    list_aux.insert(list_aux.end(), auxData);
                     insertOnTable(symbol_table, {.name = matrix_line[j],.value =  -1, .is_defined= false,.list_of_dependencies = list_aux, .line = (i+1), .section=section});
                     output_object.assembled_code.insert(output_object.assembled_code.end(), matrix_line[j]);
                 }
 
                 if(hasToLink) {
-                    output_object.relative_table.insert(output_object.relative_table.end(), std::to_string(value));
+                    if(isSymbolOnSymbolTable(definition_table, matrix_line[j]) != -1){
+                        output_object.relative_table.insert(output_object.relative_table.end(), std::to_string(value));
+                    }
                 }
             }
             else if(isInstructionOrDirective(matrix_line[j])){
