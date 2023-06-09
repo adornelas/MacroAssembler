@@ -48,12 +48,12 @@ int main(int argc, char **argv)
 
         if( argc == 2 ){
             output_file_assembled->name.append(".exc");
-            Assemble(output_file_pre_processed, output_file_assembled);
+            Assemble(output_file_pre_processed, output_file_assembled, false);
             argc--;
         }
         else{
             output_file_assembled->name.append(".obj");
-            AssembleModule(output_file_pre_processed, output_file_assembled);
+            Assemble(output_file_pre_processed, output_file_assembled, true);
         }
 
         ofstream ofs(output_file_assembled->name);
