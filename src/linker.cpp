@@ -23,25 +23,34 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
             }
 
             for(auto current_symbol : current_module.definition_table){
-                // insere os símbolos de cada uma das tabelas de definição na tabela global de definições 
-                global_definition_table.insert(global_definition_table.end(), {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
+                // insere os símbolos de cada uma das tabelas de definição na tabela global de definições
+                insertOnSymbolTable(global_definition_table, {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
             }
             last_module = current_module;
         }
 
         // atualiza os valores da tabela global de definições a partir do fator de correção
-        for (int i = 0; i < global_definition_table.size(); i++)
-        {
+        for (int i = 0; i < global_definition_table.size(); i++){
             for(auto correction : correction_factor){
                 if(correction.first == global_definition_table[i].module_index){
                     global_definition_table[i].value += correction.second;
                 }
             }
-        }        
+        }    
 
-        for(auto current_module : modules){
-            // TODO: Corrigir os endereços das entradas da tabela de uso, utilizando a tabela globalde definições
+        for (int i = 0; i < modules.size(); i++)
+        {
+            objectData current_module = modules[i];
+            int symbol_address;
+
+            // Corrigir os endereços das entradas da tabela de uso, utilizando a tabela global de definições
+            for (int j = 0; j < modules[i].use_table.size(); j++){  
+                symbol_address = isSymbolOnSymbolTable(global_definition_table, modules[i].use_table[j].name);
+                modules[i].assembled_code.at(modules[i].use_table[j].value) = std::to_string(global_definition_table[symbol_address].value);
+            }
+            
             // TODO: Corrigir os endereços do código usando os fatores de correção
+            
             // TODO: Corrigir os endereços relativos usando os fatores de correção
         }
 
