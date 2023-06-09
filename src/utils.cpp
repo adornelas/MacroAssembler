@@ -42,7 +42,14 @@ void ConvertFileToMatrixCaps(fileData * input_file, tokenMatrix * input_matrix){
     std::vector<std::string> matrix_line;
 
     input_line = Split(input_file->content, '\n');
-    for (long unsigned int i = 0; i<input_line.size(); i++){
+    for (long unsigned int i = 0; i < input_line.size(); i++){
+
+        auto aux = input_line[i].find(",");
+        if(aux != std::string::npos){
+            input_line[i].insert(input_line[i].begin() + aux + 1, ' ');
+            input_line[i].insert(input_line[i].begin() + aux, ' ');
+        }
+
         matrix_line = Split(input_line[i], ' ');
         input_matrix->matrix.push_back(matrix_line);
         lines++;
