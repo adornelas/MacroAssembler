@@ -61,30 +61,30 @@ void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData 
     output_file->content = text;
 }
 
-void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
+void ConvertModuleToFile(outputObj &output_object, fileData * output_file){
     std::string text;
     std::string matrix_line;
     
     text.append("USO\n");
-    for (int i = 0; i < output_object->use_table.size(); i++){
-        text.append(output_object->use_table[i].name);
+    for (int i = 0; i < output_object.use_table.size(); i++){
+        text.append(output_object.use_table[i].name);
         text.append(" ");
-        text.append(std::to_string(output_object->use_table[i].value));
+        text.append(std::to_string(output_object.use_table[i].value));
         text.append("\n");
 
     }
 
     text.append("DEF\n");
-    for (int i = 0; i < output_object->definition_table.size(); i++){
-        text.append(output_object->definition_table[i].name);
+    for (int i = 0; i < output_object.definition_table.size(); i++){
+        text.append(output_object.definition_table[i].name);
         text.append(" ");
-        text.append(std::to_string(output_object->definition_table[i].value));
+        text.append(std::to_string(output_object.definition_table[i].value));
         text.append("\n");
     }
 
     text.append("RELATIVOS\n");
-    for (int i = 0; i < output_object->relative_table.size(); i++){
-        text.append(output_object->relative_table[i]);
+    for (int i = 0; i < output_object.relative_table.size(); i++){
+        text.append(output_object.relative_table[i]);
         text.append(" ");
     }
     text.pop_back();
@@ -92,8 +92,8 @@ void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
 
 
     text.append("CODE\n");
-    for (int i = 0; i < output_object->assembled_code.size(); i++){
-        text.append(output_object->assembled_code[i]);
+    for (int i = 0; i < output_object.assembled_code.size(); i++){
+        text.append(output_object.assembled_code[i]);
         text.append(" ");
     }
     text.pop_back();
@@ -252,7 +252,7 @@ void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol
    symbol_table[symbol_address].list_of_dependencies.insert(symbol_table[symbol_address].list_of_dependencies.end(), token_address );
 }
 
-void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbol_data ){
-    symbol_table.insert(symbol_table.end(), symbol_data);
+void insertOnTable(std::vector<symbolData> &table, symbolData symbol_data ){
+    table.insert(table.end(), symbol_data);
 }
 
