@@ -24,7 +24,7 @@ bool isNumber(std::string token);
 bool isOperator(std::string token);
 bool isHeader(std::string token);
 
-void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, int token_address);
+void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, dependeciesData token_address);
 void insertOnTable(std::vector<symbolData> &table, symbolData symbol_data );
 
 void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData * output_file);

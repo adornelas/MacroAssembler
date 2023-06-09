@@ -246,7 +246,7 @@ bool isNumber(std::string token){
 
 bool isOperator(std::string token){
     
-    if((token.compare("SECTION") != 0) && (token.compare("TEXT") != 0) && (token.compare("DATA") != 0) && (token.compare(",") != 0)) {
+    if((token.compare("SECTION") != 0) && (token.compare("TEXT") != 0) && (token.compare("DATA") != 0) && (token.compare(",") != 0) && (token.compare("+") != 0) && token.compare("-") != 0) {
         if(!isInstructionOrDirective(token) && !isNumber(token)){
             return true;
         }
@@ -255,7 +255,7 @@ bool isOperator(std::string token){
     return false;
 }
 
-void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, int token_address){
+void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, dependeciesData token_address){
    symbol_table[symbol_address].list_of_dependencies.insert(symbol_table[symbol_address].list_of_dependencies.end(), token_address );
 }
 
