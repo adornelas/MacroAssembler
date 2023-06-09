@@ -37,6 +37,11 @@ O resultado do pré-processamento é apenas o arquivo com a retirada de espaços
 
 A tradução ainda não está implementada, apenas o pré-processamento.
 
+### Sobre a ligação do código 
+
+- se apenas um arquivo for enviado pelo terminal mas possuir pendencias a serem resolvidas na ligação,
+não ocorrerá erro. A saída do montador será no formato .exc contendo apenas o conteúdo da tabela CODE
+
 
 ### Sobre a indentificação dos erros 
 

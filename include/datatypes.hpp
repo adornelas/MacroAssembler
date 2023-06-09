@@ -35,7 +35,7 @@ struct symbolData {
     std::string section;
 };
 
-struct objectData {
+struct outputObj {
     int index;
     std::vector<symbolData> use_table;
     std::vector<symbolData> definition_table;
