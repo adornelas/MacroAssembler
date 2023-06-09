@@ -11,6 +11,15 @@ bool isLabel(std::string str){
     return false;
 }
 
+bool hasLexicError(std::string token){
+    if(token[0] == '_' || isdigit(token[0])){
+        return true;
+    }
+
+    return false;
+
+}
+
 void ConvertFileToMatrix(fileData * input_file, tokenMatrix * input_matrix){
     int lines = 0;
     std::string temp;
@@ -52,7 +61,7 @@ void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData 
     output_file->content = text;
 }
 
-void ConvertModuleToFile(outputObj * output_object, fileData * output_file){
+void ConvertModuleToFile(objectData * output_object, fileData * output_file){
     std::string text;
     std::string matrix_line;
     
@@ -202,13 +211,30 @@ bool isHeader(std::string token){
     }
 
     return found;
+} 
+
+long int toNumber(std::string token){
+    char *p;
+    long int number;
+    number = strtol(token.c_str(), &p, 10);
+    if (*p == 0){
+        return number;
+    }
+
+    number = strtol(token.c_str(), &p, 16);
+    return number;
 }
 
 bool isNumber(std::string token){
+    
     char *p;
     strtol(token.c_str(), &p, 10);
-    return *p == 0;
+    if (*p == 0){
+        return true;
+    }
 
+    strtol(token.c_str(), &p, 16);
+    return *p == 0;
 }
 
 bool isOperator(std::string token){

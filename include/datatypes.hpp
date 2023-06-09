@@ -30,9 +30,13 @@ struct symbolData {
     bool is_defined;
     bool is_extern;
     std::vector<int> list_of_dependencies;
+    int line = 0;
+    int module_index;
+    std::string section;
 };
 
-struct outputObj {
+struct objectData {
+    int index;
     std::vector<symbolData> use_table;
     std::vector<symbolData> definition_table;
     std::vector<std::string> relative_table;
