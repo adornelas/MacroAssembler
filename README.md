@@ -7,7 +7,7 @@ Equipe:
 
 O projeto AssemblerLinker é um trabalho feito para a disciplina de Software Básico (CIC0104) na Universidade de Brasília. 
 
-Seu objetivo principal é montar e ligar arquivos escritos em "assembly inventado" dado na disciplina, seguindo uma série de requisitos detalhados no roteiro do Trabalho 1 disponibilizado pelo professor Bruno Luigi. 
+Seu objetivo principal é montar e ligar arquivos escritos em "assembly inventado" dado na disciplina, seguindo uma série de requisitos detalhados no roteiro do Trabalho 1 disponibilizado pelo Professor Bruno L. M. Espinoza. 
 
 O projeto foi feito no Unix, mais especificadamente, Ubuntu, utilizando a linguagem C++ (versão c++ 20). A versão do g++ utilizada foi a 11.3.0.
 
