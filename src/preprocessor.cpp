@@ -23,11 +23,24 @@ void CleanMatrix(tokenMatrix* input_matrix) {
 
         clean_line = {};
 
+        std::string token_without_comment;
+        bool found_comment = false;
         for (long unsigned int j = 0; j < matrix_line.size(); j++) {
-            if (matrix_line[j][0] == ';')
-                break;
+            token_without_comment.clear();
+            for(int l = 0; l < matrix_line[j].size() ; l++){
+                if(matrix_line[j][l] == ';'){
+                    found_comment = true;
+                    break;
+                }
+                token_without_comment.insert(token_without_comment.end(), matrix_line[j][l]);
+            }
 
-            clean_line.push_back(matrix_line[j]);
+            clean_line.push_back(token_without_comment);
+            
+            if(found_comment){
+                break;
+            }
+
         }
         input_matrix->matrix[i] = clean_line;
         matrix_line = input_matrix->matrix[i];
