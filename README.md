@@ -85,6 +85,10 @@ Vale notar que o arquivo onde os erros estão sendo indicados (com o valor da li
 
 ## Mais observações 
 
+### MUL ou MULT
+
+Neste projeto, utilizamos ```MUL```.
+
 ### Uso do rótulo no operando de SPACE com argumentos
 
 O uso de operações de soma e subtração com rótulos definidos através do SPACE foi implementado somente no montador. Na ligação, o resultado será diferente do esperado nos casos em que houver uma linha utilizando essa operação. 
