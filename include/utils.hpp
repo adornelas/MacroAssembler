@@ -25,11 +25,12 @@ bool isOperator(std::string token);
 bool isHeader(std::string token);
 
 void insertOnListOfDependecies(std::vector<symbolData> &symbol_table, int symbol_address, int token_address);
-void insertOnSymbolTable(std::vector<symbolData> &symbol_table, symbolData symbol_data );
+void insertOnTable(std::vector<symbolData> &table, symbolData symbol_data );
 
 void ConvertArrayObjectToFile(std::vector<std::string> &output_object, fileData * output_file);
-void ConvertModuleToFile(outputObj * output_object, fileData * output_file);
+void ConvertModuleToFile(outputObj &output_object, fileData * output_file);
 long int toNumber(std::string token);
 bool hasLexicError(std::string token);
+
 
 #endif
