@@ -3,7 +3,7 @@
 Equipe:
 
 - André Dornelas Sanches - 17/0099369
-- Maria Cláudia - 17/0109968
+- Maria Claudia Campos Martins - 17/0109968
 
 O projeto AssemblerLinker é um trabalho feito para a disciplina de Software Básico (CIC0104) na Universidade de Brasília. 
 
