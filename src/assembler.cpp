@@ -96,7 +96,12 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                         }
                     }
                 }else{
-                    insertOnTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .line = (i+1)});
+                    if(hasToLink && matrix_line[j+1].compare("BEGIN") == 0){
+                        insertOnTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .is_begin = true, .line = (i+1)});
+                    }
+                    else{
+                        insertOnTable(symbol_table, {.name = symbol_clean_name,.value =  current_line_address, .is_defined= true, .line = (i+1)});
+                    }
                 }                
             }
             else if(isHeader(matrix_line[j])){
@@ -128,7 +133,13 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                     if(isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]) == -1){
                         insertOnTable(symbol_table, {.name = matrix_line[j+1],.is_defined = false});
                     }
-                    
+                    else {
+                        symbol_address = isSymbolOnSymbolTable(symbol_table, matrix_line[j+1]);
+                        if(symbol_table[symbol_address].is_begin == true){
+                            output_object.definition_table.insert(output_object.definition_table.end(), symbol_table[symbol_address]);
+                        }
+                    }
+
                     if(isSymbolOnSymbolTable(definition_table, matrix_line[j+1]) == -1){
                         insertOnTable(definition_table, {.name = matrix_line[j+1]});
                     }
