@@ -5,6 +5,6 @@
 #include "utils.hpp"
 
 void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file);
-void SeparateMatrixes(std::vector<tokenMatrix> &input_matrixes, std::vector<objectData> &modules);
+void SeparateMatrixes(std::vector<tokenMatrix> &input_matrixes, std::vector<outputObj> &modules);
 
 #endif

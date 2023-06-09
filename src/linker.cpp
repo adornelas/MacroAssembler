@@ -1,7 +1,7 @@
 #include "../include/linker.hpp"
 
 void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
-    std::vector<objectData> modules(input_matrixes.size());
+    std::vector<outputObj> modules(input_matrixes.size());
     std::map<int, int> correction_factor;   // <index, correction_factor>
     std::vector<symbolData> global_definition_table;
 
@@ -26,7 +26,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
 
             for(auto current_symbol : current_module.definition_table){
                 // insere os símbolos de cada uma das tabelas de definição na tabela global de definições
-                insertOnSymbolTable(global_definition_table, {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
+                insertOnTable(global_definition_table, {.name = current_symbol.name, .value = current_symbol.value, .module_index = current_module.index});
             }
             accumulated_module_size += current_module.assembled_code.size();
         }
@@ -42,7 +42,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
 
         for(int i = 0; i < modules.size(); i++)
         {
-            objectData current_module = modules[i];
+            outputObj current_module = modules[i];
             int symbol_address;
 
             // Corrigir os endereços das entradas da tabela de uso, utilizando a tabela global de definições
@@ -73,7 +73,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
     }
 }
 
-void SeparateMatrixes(std::vector<tokenMatrix> &input_matrixes, std::vector<objectData> &modules){
+void SeparateMatrixes(std::vector<tokenMatrix> &input_matrixes, std::vector<outputObj> &modules){
     std::vector<std::string> matrix_line;
     tokenMatrix current_matrix;
     int index = 0;
