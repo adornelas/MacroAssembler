@@ -48,7 +48,7 @@ void Link(std::vector<tokenMatrix> &input_matrixes, fileData *output_file){
             // Corrigir os endereços das entradas da tabela de uso, utilizando a tabela global de definições
             for(int j = 0; j < modules[i].use_table.size(); j++){  
                 symbol_address = isSymbolOnSymbolTable(global_definition_table, modules[i].use_table[j].name);
-                modules[i].assembled_code.at(modules[i].use_table[j].value) = std::to_string(global_definition_table[symbol_address].value);
+                modules[i].assembled_code.at(modules[i].use_table[j].value) = std::to_string( std::stoi(modules[i].assembled_code.at(modules[i].use_table[j].value)) + global_definition_table[symbol_address].value);
             }
             
             // Corrigir os endereços relativos usando os fatores de correção

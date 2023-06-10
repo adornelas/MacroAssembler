@@ -98,14 +98,14 @@ void TranslateAssemblyToObject(fileData *input_file, tokenMatrix *input_matrix, 
                         if(hasToLink){
                             symbol_address = isSymbolOnSymbolTable(definition_table, symbol_clean_name);
                             if(symbol_address != -1){
-                                if(matrix_line[j+1].compare("CONST") == 0){
-                                    definition_table[symbol_address].value = std::stoi(matrix_line[j+2]);
-                                    output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
-                                }
-                                else {
-                                    definition_table[symbol_address].value = current_line_address;
-                                    output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
-                                }
+                                // if(matrix_line[j+1].compare("CONST") == 0){
+                                //     definition_table[symbol_address].value = std::stoi(matrix_line[j+2]);
+                                //     output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
+                                // }
+                                // else {
+                                definition_table[symbol_address].value = current_line_address;
+                                output_object.definition_table.insert(output_object.definition_table.end(), definition_table[symbol_address]);
+                                // }
                             }
                         }
                     }
