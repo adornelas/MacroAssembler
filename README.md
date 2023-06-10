@@ -55,6 +55,16 @@ Os arquivos gerados pelo montador são os arquivos pré-processados, com nome no
 
 Se apenas um arquivo for enviado para o montador e ele possuir dependências a serem resolvidas, não ocorrerá erro. A saída será no formato ```.exc``` contendo apenas a tabela CODE que seria gerada na ligação.
 
+As diretivas EXTERN e PUBLIC vem antes da variável, sendo que EXTERN deve ser sempre prosseguido de :(dois pontos), como:
+
+
+```
+EXTERN: Y
+PUBLIC  VAL
+```
+
+Caso sejam usados de forma diferente dessa, o programa resultará em erros.
+
 #### Para executar o ligador 
 
 ```
@@ -91,9 +101,7 @@ Neste projeto, utilizamos ```MUL```.
 
 ### Uso do rótulo no operando de SPACE com argumentos
 
-O uso de operações de soma e subtração com rótulos definidos através do SPACE foi implementado somente no montador. Na ligação, o resultado será diferente do esperado nos casos em que houver uma linha utilizando essa operação. 
-
-Além disso, para os testes sempre usar espaço como
+Para os testes, sempre usar espaço como
 
 ```
 X + 2 
